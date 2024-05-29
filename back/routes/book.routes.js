@@ -18,7 +18,7 @@ router.get('/books/genres-actions', (req, res) => {
 router.get('/books/get', bookController.getBooks)
 router.post('/books/post', passport.authenticate('jwt', { session: false }), upload.single('image'), bookController.addBook)
 router.delete('/books/delete/:id', passport.authenticate('jwt', { session: false }), bookController.deleteBook)
-router.patch('/books/edit/:id', bookController.editBook)
-// passport.authenticate('jwt', { session: false})
+router.patch('/books/edit/:id',passport.authenticate('jwt', { session: false}), bookController.editBook)
+
 
 module.exports = router
