@@ -1,0 +1,334 @@
+openapi: 3.0.3
+info:
+  title: InterBooks
+  version: 1.0.0
+  description: |-
+    InterBooks es una plataforma para el intercambio de libros, venta o regalos. Donde vas a poder conseguir renovar toda tu bibloteca dando aquellos libros viejos una segunda vida
+
+servers:
+  - url: http://localhost:3001
+    description: Servidor Local
+  - url: https://interbooks-backend.onrender.com/
+    description: Deploy en Render
+
+tags:
+  - name: Books
+    description: Books
+  - name: Users
+    description: Users
+  - home: Home
+    description: Home
+paths:
+  /api/auth/login:
+    post:
+      summary: Logs in a user
+      tags: [Auth]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Login"
+      responses:
+        "200":
+          description: The user was successfully logged in
+          content:
+            application/json:
+              schema:
+                type: json
+                example:
+                  {
+                    "userId": "644e5sda4a9b74c54243",
+                    "jwt": "eyJhaadsciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ24544NTA0MDRlOWQ4YTRhOqwedASD3NDMiLCJpYXQiOjE3MTY0MTczNTAsImV4cCI6MTcxNjUwMzc1MH0.-M3TadDuFEEDZQMtsad56ad5321E4i3FN1mWhfS1QQdsTw",
+                  }
+        "404":
+          description: The user was not found
+        "500":
+          description: Internal server error
+  
+  /api/user/register:
+    post:
+      summary: Registers a user
+      tags: [Users]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Register"
+      responses:
+        "201":
+          description: The user was successfully register
+          content:
+            application/json:
+              schema:
+                type: json
+                example:
+                  {
+                    "user":
+                      {
+                        "username": "Naiki",
+                        "password": "$2b$10$TxF5Q4jvB2VVmJW/yooaKupiZaCxh85On6hJGp2TTp9EnIEOlCbLS",
+                        "email": "nicolas@gmail.com",
+                        "favoriteGenres": ["fiction", "mystery"],
+                        "books": [],
+                        "pais": "Argentina",
+                        "codigoPostal": "1870",
+                        "_id": "664f54bf77e8c53de89dd719",
+                        "__v": 0,
+                      },
+                  }
+        "404":
+          description: The user was not register
+        "500":
+          description: Internal server error
+  /api/user/edit/{userId}:
+    put:
+      summary: Edits a user
+      tags: [Users]
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Register"
+      responses:
+        "201":
+          description: User updated successfully
+          content:
+            application/json:
+              schema:
+                type: json
+                example:
+                  {
+                    "user":
+                      {
+                        "username": "Naiki",
+                        "password": "$2b$10$TxF5Q4jvB2VVmJW/yooaKupiZaCxh85On6hJGp2TTp9EnIEOlCbLS",
+                        "email": "nicolas@gmail.com",
+                        "favoriteGenres": ["fiction", "mystery"],
+                        "books": [],
+                        "pais": "Argentina",
+                        "codigoPostal": "1870",
+                        "_id": "664f54bf77e8c53de89dd719",
+                        "__v": 0,
+                      },
+                  }
+        "404":
+          description: User not found
+        "500":
+          description: Internal server error
+  /api/user/delete/{userId}:
+    delete:
+      summary: Deletes a user
+      tags: [Users]
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: string
+      responses:
+        "201":
+          description: User deleted successfully
+        "404":
+          description: User not found
+        "500":
+          description: Error when deleting user
+  
+  /api/books/:
+    get:
+      summary: Get books
+      tags: [Books]
+      description: Get books
+      responses:
+        "200":
+          description: Get books successfully
+          content:
+            application/json:
+              schema:
+                $ref:
+                  "#/components/schemas/Book"
+        "404":
+          description: Books not found
+        "500":
+          description: Internal server error   
+    post:
+      security:
+        - bearerAuth: []
+      summary: Post books
+      tags: [Books]
+      description: Post books
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                year:
+                  type: string
+                ISBN:
+                  type: string
+                author:
+                  type: string
+                genre:
+                  type: string
+                  enum: ['Fantasía', 'Ciencia Ficción', 'Novela', 'Romance', 'Terror', 'Suspenso', 'Biografía']
+                image:
+                  type: string
+                  format: binary
+                actions:
+                  type: string
+                  enum: ["Venta", "Intercambio", "Regalo"]
+      responses:
+        "201":
+          description: The book was successfully created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Book"
+        "404":
+          description: Image is required
+        "500":
+          description: Error uploading image
+  /api/books/{id}:
+    delete:
+      security:
+        - bearerAuth: []
+      summary: Delete books
+      tags: [Books]
+      description: Delete books
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Book deleted
+        "400":
+          description: Book not found
+        "500":
+          description: Error deleting book
+
+  /api/books/genres-actions:
+    get:
+      summary: Get genres and actions
+      tags: [Books]
+      description: Get genres and actions
+      responses:
+        "200":
+          description: The user was successfully logged in
+          content:
+            application/json:
+              schema:
+                type: json
+                example:
+                  {
+                    "genres": ['Fantasía', 'Ciencia Ficción', 'Novela', 'Romance', 'Terror', 'Suspenso', 'Biografía'],
+                    "actions": ["Venta", "Intercambio", "Regalo"]
+                  }
+
+  /api/home:
+    get:
+      security:
+        - bearerAuth: []
+      summary: Prueba auth routers
+      tags: [Home]
+      description: Get home
+      responses:
+        "200":
+          description: The user was successfully logged in
+          content:
+            application/html:
+              example: home
+
+components:
+  schemas:
+    Login:
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+      example:
+        email: usuarioprueba@example.com
+        password: Usuarioprueba1!
+    Register:
+      type: object
+      properties:
+        email: 
+          type: string
+        password: 
+          type: string
+        username: 
+          type: string
+        favoriteGenres:
+          type: array 
+        country:
+          type: string
+        postalCode: 
+          type: string
+        phoneNumber:
+          type: string
+      example:
+        email: usuarioprueba@example.com
+        password: Usuarioprueba1!
+        username: Usuarioprueba
+        favoriteGenres: ["fiction", "mystery"]
+        country: Argentina
+        postalCode: 1870
+        phoneNumber: 123456789
+    Book:
+      type: object
+      properties:
+        _id:
+          type: string
+        title:
+          type: string
+        author:
+          type: string
+        genre:
+          type: string
+        image:
+          type: string
+        language:
+          type: string
+        action:
+          type: string
+        ISBN:
+          type: string
+        synopsis:
+          type: string
+        userid:
+          type: string
+      example:
+        _id: 644e5sda4a9b74c54243
+        title: The Lord of the Rings
+        author: J. R. R. Tolkien
+        genre: fantasy
+        image: https://via.placeholder.com/150
+        language: Español
+        actions: Venta
+        ISBN: 123456789
+        synopsis: El senñor de los anillos
+        userid: 664f54bf77e8c53de89dd719
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+security:
+  - bearerAuth: []
