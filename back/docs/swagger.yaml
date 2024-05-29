@@ -8,7 +8,7 @@ info:
 servers:
   - url: http://localhost:3001
     description: Servidor Local
-  - url: https://interbooks-backend.onrender.com/
+  - url: https://s15-02-m-node-react-interbooks.onrender.com/
     description: Deploy en Render
 
 tags:
