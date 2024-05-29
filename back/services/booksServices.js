@@ -63,31 +63,9 @@ const editBook = async (bookId,updateData) =>{
         return updatedBook
     } catch(e){
         console.log("Error updating book",e)
-        return{message: 'Error deleting book', e}
+        return{message: 'Error updating book', e}
     }
 }
-// const editBook = async (id,updates) => {
-//     try{
-//         console.log("services",updates)
-//         const book = await BookModel.findById(id)
-//         if(!book){
-//             return { error : "Book not found"}
-//         }
-        
-//         for (let key in updates){
-//             if(book[key] !== undefined) {
-//                 book[key] = updates[key]
-//             }
-//         }
-
-//         await book.save()
-//         return { message: "Book updated", book }
-//     } catch (e) {
-//         console.log("Error updating books",e)
-//         return { message: "Error updating books", e}
-//     }
-// }
-
 
 
 module.exports = {

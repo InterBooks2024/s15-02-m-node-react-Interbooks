@@ -42,18 +42,6 @@ const editBook = async (req,res) =>{
     }
 }
 
-// const editBook = async (req,res) =>{
-//     try{
-//         const id = req.params.id
-//         const {updates} = req.body
-//         console.log("controllers",updates)
-//         const result = await booksServices.editBook(id,updates)
-//         if (result.error) return res.status(400).json(result)
-//         res.status(200).json(result) 
-//     } catch (e){
-//         console.error(e)
-//     }
-// }
 
 module.exports = {
     addBook,
