@@ -20,20 +20,14 @@ module.exports.userRegister = async (req,res) => {
 }
 
 module.exports.userUpdate = async (req,res) => {
-    const { id } = req.params
-    const { email, password, username, favoriteGenres, country, postalCode, phoneNumber } = req.body
-
-        const result = await userServices.updateUser(id,email,password,username,favoriteGenres,country,postalCode,phoneNumber)
-
-        if (result.error) {
-            if (result.error === "User not found"){
-                return res.status(404).json({ error: result.error})
-            } else {
-                return res.status(500).json({ error: result.error})
-            }
+    const   id  = req.params.id
+    const updateData = req.body
+        try{
+            const userUpdated = await userServices.updateUser(id,updateData)
+            res.status(200).json(userUpdated)
+        } catch(e){
+            res.status(400).json({ error: error.message})
         }
-
-        return res.status(200).json({ message: result.message, user : result.user})
 }
 
 module.exports.userDelete = async (req,res) =>{
