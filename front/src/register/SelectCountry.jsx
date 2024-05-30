@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 
-export const SelectCountry = ({onChange}) => {
+export const SelectCountry = ({onChange, id, name, className}) => {
     const [countries, setCountries] = useState([]);
     const [selectedCountry, setSelectedCountry] = useState({});
-    const [userCountry, setUserCountry] = useState(selectedCountry);
+    const [userCountry, setUserCountry] = useState();
   
     useEffect(() => {
       fetch(
@@ -13,21 +13,22 @@ export const SelectCountry = ({onChange}) => {
         .then((data) => {
           setCountries(data.countries);
           setSelectedCountry(data.userSelectValue);
-          setUserCountry(selectedCountry)
+          setUserCountry(data.userSelectValue.label)
         });
     }, []);
 
     const handleChange = (event) => {
         const value = event.target.value;
-        setUserCountry(value)
         onChange(value);
+        setUserCountry(value)
       };
 
   return (
-        <select name="select" 
-                className="my-2 px-[20px] w-full outline-none border-2 border-zinc-400 rounded-[20px] text-base h-10 placeholder:text-zinc-300" 
-                value={userCountry}
-                onChange={handleChange}
+        <select name={name} 
+                id={id}
+                className = {className}
+                value = {userCountry}
+                onChange = {handleChange}
         >
             {countries.map((country) => (
             <option key={country.value} value={country.label}>

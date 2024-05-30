@@ -1,16 +1,21 @@
 import axios from "axios";
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form";
 import { SelectCountry } from "./SelectCountry";
 
 const Register = () => {
+    const BASE_URL = "https://s15-02-m-node-react-interbooks.onrender.com/api";
+    const REGISTER = "/user/register";
     const [loading, setLoading] = useState(false)
-    const [userCountry, setUserCountry] = useState('');
+    const [userCountrySel, setUserCountrySel] = useState('');
+    const [errorGenres, setErrorGenres] = useState(false);
 
     function onChangeCountry(value){
-        setUserCountry(value)
-        console.log('pais', value)
+        setUserCountrySel(value)
     }
+    useEffect(() => {
+    }, [userCountrySel]);
+
     const {
         register,
         handleSubmit,
@@ -43,24 +48,32 @@ const Register = () => {
 
     // funcion del formulario
     const onSubmit = handleSubmit(async (data)=> {
-
+        // data que necesita el POST      {
+        //     "email": "usuarioprueba@example.com",
+        //     "password": "Usuarioprueba1!",
+        //     "username": "Usuarioprueba",
+        //     "favoriteGenres": ["fiction","mystery"],
+        //     "country": "Argentina",
+        //     "postalCode": 1870,
+        //     "phoneNumber": 123456789
+        //   }
         const body = {
-            "userName": data.userName,
             "email": data.email,
-            "phoneNumber": data.phoneNumber,
-            "postalCode": data.postalCode,
-            "country": userCountry, //colocar un select
             "password": data.password,
-            "favouriteGenres": data.favouriteGenres //colocar un select
+            "userName": data.userName,
+            "favouriteGenres": selectedGenres, //colocar un select
+            "country": userCountrySel, //colocar un select
+            "postalCode": data.postalCode,
+            "phoneNumber": data.phoneNumber,
         }
-
+        console.log(body)
         try {
-        setLoading(true)
-        const rta = await authRegistro(body)
+            setLoading(true)
+            const rta = await authRegistro(body)
         // navigate(rutaInicio)
         } catch (error) {
-        setLoading(false)
-        handleError(error)
+            setLoading(false)
+            handleError(error)
         }
     })
     const handleError = (error) => {
@@ -77,7 +90,33 @@ const Register = () => {
         //     transition: Bounce,
         //     });
     };
-
+    
+    const genres = [
+        "Fantasía",
+        "Ciencia Ficción",
+        "Novela",
+        "Romance",
+        "Terror",
+        "Suspenso",
+        "Biografía"
+    ];
+    
+    const [selectedGenres, setSelectedGenres] = useState([]);
+    
+    const handleOnChange = (genre) => {
+        if (selectedGenres.includes(genre)) {
+        setSelectedGenres(selectedGenres.filter(item => item !== genre));
+        } else {
+        if (selectedGenres.length < 3) {
+            setSelectedGenres([...selectedGenres, genre]);
+        } else {
+            setErrorGenres(true);
+            setTimeout(() => {
+            setErrorGenres(false);
+            },3000)
+        }
+        }
+    }
     return (
         <div className="w-96 mx-auto">
             {/* <ToastContainer position="top-right" /> */}
@@ -88,7 +127,7 @@ const Register = () => {
                     {/* User Name */}
                 <label className="mt-4 block text-[16px] font-[600] text-zinc-400" htmlFor="name">Nombre de Usuario *</label>
                 <input 
-                    className="my-2 py-[10px] px-[20px] w-full outline-none border-2 border-zinc-400 rounded-[20px] text-base h-10 placeholder:text-zinc-300" 
+                    className="my-2 py-[10px] px-[20px] w-full outline-none border-2 border-zinc-400 rounded-[20px] text-base focus:border-cyan-400  text-zinc-600 h-10 placeholder:text-zinc-300" 
                     id="name" 
                     type="text"
                     placeholder="Escribe tu nombre"
@@ -120,7 +159,7 @@ const Register = () => {
                     {/* Email */}
                 <label className="mt-4 block text-[16px] font-[600] text-zinc-400" htmlFor="email">Correo Electrónico *</label>
                 <input 
-                className="my-2 py-[10px] px-[20px] w-full outline-none border-2 border-zinc-400 rounded-[20px] text-base h-10 placeholder:text-zinc-300" 
+                className="my-2 py-[10px] px-[20px] w-full outline-none border-2 border-zinc-400 rounded-[20px] text-base focus:border-cyan-400  text-zinc-600 h-10 placeholder:text-zinc-300" 
                 id="email" 
                 type="email"
                 placeholder="Escribe tu email"
@@ -144,7 +183,7 @@ const Register = () => {
                     {/* Password */}
                 <label className="mt-4 block text-[16px] font-[600] text-zinc-400" htmlFor="password">Contraseña *</label>
                 <input 
-                    className="my-2 py-[10px] px-[20px] w-full outline-none border-2 border-zinc-400 rounded-[20px] text-base h-10 placeholder:text-zinc-300" 
+                    className="my-2 py-[10px] px-[20px] w-full outline-none border-2 border-zinc-400 rounded-[20px] text-base focus:border-cyan-400  text-zinc-600 h-10 placeholder:text-zinc-300" 
                     id="password" 
                     type="password"
                     placeholder="Escribe tu contraseña"
@@ -181,7 +220,7 @@ const Register = () => {
             {/* Confirm Password */}
                 <label className="mt-4 block text-[16px] font-[600] text-zinc-400" htmlFor="confirmPassword">Repite tu contraseña *</label>
                 <input 
-                    className="my-2 py-[10px] px-[20px] w-full outline-none border-2 border-zinc-400 rounded-[20px] text-base h-10 placeholder:text-zinc-300" 
+                    className="my-2 py-[10px] px-[20px] w-full outline-none border-2 border-zinc-400 rounded-[20px] text-base focus:border-cyan-400  text-zinc-600 h-10 placeholder:text-zinc-300" 
                     id="confirmPassword" 
                     type="password"
                     placeholder="Escribe tu contraseña"
@@ -200,12 +239,16 @@ const Register = () => {
                 )}
                     {/* Country */}
                 <label className="mt-4 block text-[16px] font-[600] text-zinc-400" htmlFor="country">País *</label>
-                <SelectCountry onChange={onChangeCountry} />   
+                <SelectCountry onChange={onChangeCountry}
+                                id = "country"
+                                className ="my-2 px-[20px] w-full outline-none border-2 border-zinc-400 rounded-[20px] text-base  focus:border-cyan-400  text-zinc-600 h-10 placeholder:text-zinc-300" 
+
+                />   
 
                     {/* Phone Number */}
                 <label className="mt-4 block text-[16px] font-[600] text-zinc-400" htmlFor="phoneNumber">Número de Teléfono *</label>
                 <input 
-                    className="my-2 py-[10px] px-[20px] w-full outline-none border-2 border-zinc-400 rounded-[20px] text-base h-10 placeholder:text-zinc-300" 
+                    className="my-2 py-[10px] px-[20px] w-full outline-none border-2 border-zinc-400 rounded-[20px] text-base focus:border-cyan-400  text-zinc-600 h-10 placeholder:text-zinc-300" 
                     id="phoneNumber" 
                     type="text"
                     placeholder="Escribe tu número de teléfono"
@@ -229,48 +272,48 @@ const Register = () => {
                     {errors.phoneNumber.message}
                     </span>
                 )}
-                {/* Postal Code
-                <label className="mt-4 block text-[16px] font-[600] text-zinc-400" htmlFor="postalCode">Número de Teléfono *</label>
+                    {/* Postal Code */}
+                <label className="mt-4 block text-[16px] font-[600] text-zinc-400" htmlFor="postalCode">Código Postal *</label>
                 <input 
-                    className="my-2 py-[10px] px-[20px] w-full outline-none border-2 border-zinc-400 rounded-[20px] text-base h-10 placeholder:text-zinc-300" 
+                    className="my-2 py-[10px] px-[20px] w-full outline-none border-2 border-zinc-400 rounded-[20px] text-base focus:border-cyan-400  text-zinc-600 h-10  placeholder:text-zinc-300 " 
                     id="postalCode" 
-                    type="text"
+                    type="number"
                     placeholder="Escribe tu Código Postal"
                     {...register("postalCode", {
                     required: {
                         value: true,
                         message: "El Código Postal es requerido",
-                    },
-                    minLength: {
-                        value: 2,
-                        message: "El teléfono debe tener al menos 2 números"
-                    },
-                    maxLength: {
-                        value: 12,
-                        message: "El teléfono debe tener como máximo 12 números"
-                    },
+                    }
                     })}
                 />
                 {errors.postalCode && (
                     <span className="block absolute -m-2 ml-4 text-red-600 text-xs">
                     {errors.postalCode.message}
                     </span>
-                )} */}
+                )}
+                    {/* Checkbox de Géneros */}
                 <div>
-                    <label className="mt-4 block text-[16px] font-[600] text-zinc-400" htmlFor="postalCode">Elige tus géneros favoritos</label>
-                    <p>Terror / Ficcion / Histórico</p>
-                    <p>comedia / Misterio / Infantil</p>
-                    <p>Drama / Romance / Avetura</p>
-
-                {/* Hacer map con esto
-                    <input
-                    type="checkbox"
-                    id={`custom-checkbox-${index}`}
-                    name={name}
-                    value={name}
-                    checked={checkedState[index]}
-                    onChange={() => handleOnChange(index)}
-                    /> */}
+                <label className="mt-4 block text-[16px] font-[600] text-zinc-400" htmlFor="genres">Elige tus géneros favoritos</label>
+                    <div className="grid grid-cols-3 mt-4">
+                        {genres.map((genre, index) => (
+                            <div key={index} className="text-sm flex items-center gap-1 text-zinc-400">
+                                <input
+                                    type="checkbox"
+                                    id={`custom-checkbox-${index}`}
+                                    name={genre}
+                                    value={genre}
+                                    checked={selectedGenres.includes(genre)}
+                                    onChange={() => handleOnChange(genre)}
+                                />
+                                <label htmlFor={`custom-checkbox-${index}`}>{genre}</label>
+                            </div>
+                        ))}
+                    </div>
+                    {errorGenres && (
+                    <span className="block absolute ml-4 text-red-600 text-xs">
+                    Solo hasta 3 opciones puedes elegir.
+                    </span>
+                )}
                 </div>
 
             <button 
