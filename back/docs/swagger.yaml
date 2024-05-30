@@ -16,8 +16,8 @@ tags:
     description: Books
   - name: Users
     description: Users
-  - home: Home
-    description: Home
+  - name: Exchange
+    description: Exchange
 paths:
   /api/auth/login:
     post:
@@ -142,7 +142,7 @@ paths:
         "500":
           description: Error when deleting user
   
-  /api/books/:
+  /api/books/get:
     get:
       summary: Get books
       tags: [Books]
@@ -159,6 +159,7 @@ paths:
           description: Books not found
         "500":
           description: Internal server error   
+  /api/books/post:
     post:
       security:
         - bearerAuth: []
@@ -176,7 +177,7 @@ paths:
                   type: string
                 year:
                   type: string
-                ISBN:
+                isbn:
                   type: string
                 author:
                   type: string
@@ -200,7 +201,7 @@ paths:
           description: Image is required
         "500":
           description: Error uploading image
-  /api/books/{id}:
+  /api/books/delete/{id}:
     delete:
       security:
         - bearerAuth: []
@@ -220,6 +221,28 @@ paths:
           description: Book not found
         "500":
           description: Error deleting book
+  /api/books/edit/{id}:
+    put:
+      security:
+        - bearerAuth: []
+      summary: Edit books
+      tags: [Books]
+      description: Edit books
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
 
   /api/books/genres-actions:
     get:
@@ -239,19 +262,41 @@ paths:
                     "actions": ["Venta", "Intercambio", "Regalo"]
                   }
 
-  /api/home:
-    get:
+  /api/exchange/{bookId}:
+    post:
       security:
         - bearerAuth: []
-      summary: Prueba auth routers
-      tags: [Home]
-      description: Get home
+      summary: Exchange books
+      tags: [Exchange]
+      description: Exchange books
+      parameters:
+        - in: path
+          name: bookId
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ExcahngeRequest"
       responses:
         "200":
-          description: The user was successfully logged in
+          description: The book was successfully exchanged
           content:
-            application/html:
-              example: home
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExcahngeRequest"
+        "400":
+          description: Book not found
+        "401":
+          description: The user is not the owner of the book
+        "404":
+          description: Book not found
+        "500":
+          description: Error exchanging book
+    /api/exchange/{exchangeId}/accept:
 
 components:
   schemas:
@@ -265,6 +310,7 @@ components:
       example:
         email: usuarioprueba@example.com
         password: Usuarioprueba1!
+    
     Register:
       type: object
       properties:
@@ -290,6 +336,7 @@ components:
         country: Argentina
         postalCode: 1870
         phoneNumber: 123456789
+    
     Book:
       type: object
       properties:
@@ -324,6 +371,33 @@ components:
         ISBN: 123456789
         synopsis: El senñor de los anillos
         userid: 664f54bf77e8c53de89dd719
+  
+    ExcahngeRequest:
+      type: object
+      properties:
+        id:
+          type: string
+        bookId:
+          type: string
+        userIdFrom:
+          type: string
+        userIdTo:
+          type: string
+        bookOfferedId:
+          type: string
+        status:
+          type: string
+      example: 
+        {
+        "_id": "6658668940b3603ba1e6ffb4",
+        "bookId": "665861da889b4ca664d545b4",
+        "userIdFrom": "66586293889b4ca664d545b9",
+        "userIdTo": "66585c44fb1c4bb8322adb3b",
+        "bookOfferedId": "66586337889b4ca664d545bd",
+        "status": "aceptada",
+        "__v": 0
+        }
+        
   securitySchemes:
     bearerAuth:
       type: http

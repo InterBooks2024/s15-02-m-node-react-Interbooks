@@ -4,6 +4,7 @@ const cors = require("cors")
 const authRoutes = require("./routes/auth.routes.js")
 const homeRoutes = require("./routes/home.routes.js")
 const bookRoutes = require("./routes/book.routes.js")
+const exchangeRoutes = require("./routes/exchange.routes.js")
 const passport = require('passport');
 require('./middlewares/auth.middlewares');
 require("dotenv").config()
@@ -41,3 +42,4 @@ app.use("/api", userRoutes)
 app.use("/api", authRoutes)
 app.use("/api", homeRoutes)
 app.use("/api", bookRoutes)
+app.use("/api", exchangeRoutes)
