@@ -16,8 +16,8 @@ tags:
     description: Books
   - name: Users
     description: Users
-  - name: Exchange
-    description: Exchange
+  - name: Exchanges
+    description: Manage book exchanges, for all routes you must log in
 paths:
   /api/auth/login:
     post:
@@ -243,7 +243,6 @@ paths:
               properties:
                 title:
                   type: string
-
   /api/books/genres-actions:
     get:
       summary: Get genres and actions
@@ -266,9 +265,9 @@ paths:
     post:
       security:
         - bearerAuth: []
-      summary: Exchange books
-      tags: [Exchange]
-      description: Exchange books
+      summary: Create exchange books
+      tags: [Exchanges]
+      description: Create exchange books
       parameters:
         - in: path
           name: bookId
@@ -279,24 +278,170 @@ paths:
         required: true
         content:
           application/json:
-            schema:
-              $ref: "#/components/schemas/ExcahngeRequest"
+            example:
+              {"actions": "Intercambio"}
       responses:
-        "200":
-          description: The book was successfully exchanged
+        "201":
+          description: The exchange request was successfully created
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ExcahngeRequest"
-        "400":
-          description: Book not found
-        "401":
-          description: The user is not the owner of the book
+                $ref: "#/components/schemas/ExchangeRequest"
         "404":
-          description: Book not found
+          description: Book not found or User Not Found
+        "400":
+          description: The user cannot exchange, give or sell their book to themselves
         "500":
           description: Error exchanging book
-    /api/exchange/{exchangeId}/accept:
+  /api/exchange/{exchangeId}/accept:
+      patch:
+        security:
+          - bearerAuth: []
+        summary: Accept exchange
+        tags: [Exchanges]
+        description: Accept exchange
+        parameters:
+          - in: path
+            name: exchangeId
+            required: true
+            schema:
+              type: string
+        requestBody:
+          required: true
+          content:
+            application/json:
+              example:
+                {"bookUserFrom": "664f54bf77e8c53de89dd719"}
+        responses:
+          "200":
+            description: The book was successfully exchanged
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/ExchangeRequest"
+                  example: {"status": "aceptada"}
+          "400":
+            description: Only pending requests can be modified or Required book to exchange
+          "404":
+            description: Exchange request not found or Book to exchange not found
+          "403":
+            description: User cannot modify this request
+          "500":
+            description: Error exchanging book
+  /api/exchange/{exchangeId}/reject:
+      patch:
+        security:
+          - bearerAuth: []
+        summary: Reject exchange
+        tags: [Exchanges]
+        description: Reject exchange
+        parameters:
+          - in: path
+            name: exchangeId
+            required: true
+            schema:
+              type: string
+        responses:
+          "200":
+            description: The exchange request was rejected successfully
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/ExchangeRequest"
+          "400":
+            description: Only pending requests can be modified
+          "403":
+            description: User cannot modify this request
+          "404":
+            description: Exchange request not found
+          "500":
+            description: Error exchanging book
+  /api/exchanges/sent:
+    get:
+      security:
+        - bearerAuth: []
+      summary: Get all sent exchanges
+      tags: [Exchanges]
+      description: Get all sent exchanges
+      responses:
+        "200":
+          description: The user was successfully get all exchanges request sent
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExchangeRequestUserFrom"
+        "403":
+          description: The user is not the owner of the request
+        "500":
+          description: Error getting received exchanges
+  /api/exchanges/received:
+    get:
+      security:
+        - bearerAuth: []
+      summary: Get all exchanges received
+      tags: [Exchanges]
+      description: Get all exchanges request received
+      responses:
+        "200":
+          description: The user was successfully get all exchanges request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExchangeRequestUserTo"
+        "403":
+          description: The user is not the owner of the request
+        "500":
+          description: Error getting my exchanges
+  /api/exchanges/delete/sent:
+    delete:
+      security:
+        - bearerAuth: []
+      summary: Delete all exchange request sent
+      tags: [Exchanges]
+      description: Delete all submitted exchange requests that are not pending
+      responses:
+        "200":
+          description: All exchanges requests submitted have been deleted
+          content:
+            application/json:
+              example: {
+                          "message": "All exchange requests submitted have been deleted",
+                          "exchangeRequest": {
+                            "acknowledged": true,
+                            "deletedCount": 1
+                          }
+                        }
+        "400":
+          description: The user has no exchange requests
+        "403":
+          description: The user is not the owner of the request
+        "500":
+          description: Error exchanging book
+  /api/exchanges/delete/received:
+    delete:
+      security:
+        - bearerAuth: []
+      summary: Delete exchange
+      tags: [Exchanges]
+      description: Delete all received exchange requests that are not pending
+      responses:
+        "200":
+          description: All exchanges requests received have been deleted
+          content:
+            application/json:
+              example: {
+                          "message": "All exchange requests received have been deleted",
+                          "exchangeRequest": {
+                            "acknowledged": true,
+                            "deletedCount": 1
+                          }
+                        }
+        "400":
+          description: The user has no exchange requests
+        "403":
+          description: The user is not the owner of the request
+        "500":
+          description: Error exchanging book
 
 components:
   schemas:
@@ -372,32 +517,120 @@ components:
         synopsis: El senñor de los anillos
         userid: 664f54bf77e8c53de89dd719
   
-    ExcahngeRequest:
+    ExchangeRequest:
       type: object
       properties:
-        id:
+        __id:
           type: string
         bookId:
           type: string
         userIdFrom:
           type: string
+        usernameFrom:
+          type: string
         userIdTo:
+          type: string
+        usernameTo:
+          type: string
+        libraryUserFrom:
+          type: array string
+        phoneNumberUserFrom:
           type: string
         bookOfferedId:
           type: string
+          default: null
         status:
+          type: string
+          default: pendiente
+        actions:
+          type: array string
+        createdAt:
+          type: string
+      example: 
+            {
+            "bookId": "66586337889b4ca664d545bd",
+            "userIdFrom": "66585c44fb1c4bb8322adb3b",
+            "usernameUserFrom": "JoseHernandez",
+            "userIdTo": "66586293889b4ca664d545b9",
+            "usernameUserTo": "Agathachristie",
+            "libraryUserFrom": [
+              "665861da889b4ca664d545b4"
+            ],
+            "phoneNumberUserFrom": "3512714562",
+            "bookOfferedId": null,
+            "status": "pendiente",
+            "actions": [],
+            "_id": "665a03bc14ac4afd60eb13a9",
+            "createdAt": "2024-05-31T17:07:08.678Z",
+            "__v": 0
+           }
+
+    ExchangeObjectUserFrom:
+      type: object
+      properties:
+        _id:
+          type: string
+        userIdTo:
+          type: string
+        usernameUserTo:
+          type: string
+        status:
+          type: string
+        actions:
+          type: array string
+        createdAt:
+          type: string
+      example: {
+                  "_id": "665a060576de73cedbde7695",
+                  "userIdTo": "66586293889b4ca664d545b9",
+                  "usernameUserTo": "Agathachristie",
+                  "status": "pendiente",
+                  "actions": [],
+                  "createdAt": "2024-05-31T17:16:53.508Z"
+               }
+
+    ExchangeRequestUserFrom:
+      type: array
+      items:
+        $ref: "#/components/schemas/ExchangeObjectUserFrom"
+
+    ExchangeObjectUserTo:
+      type: object
+      properties:
+        _id:
+          type: string
+        userIdFrom:
+          type: string
+        usernameUserFrom:
+          type: string
+        libraryUserFrom:
+          type: array string
+        phoneNumberUserFrom:
+          type: string
+        status:
+          type: string
+        actions:
+          type: array string
+        createdAt:
           type: string
       example: 
         {
-        "_id": "6658668940b3603ba1e6ffb4",
-        "bookId": "665861da889b4ca664d545b4",
-        "userIdFrom": "66586293889b4ca664d545b9",
-        "userIdTo": "66585c44fb1c4bb8322adb3b",
-        "bookOfferedId": "66586337889b4ca664d545bd",
-        "status": "aceptada",
-        "__v": 0
+          "_id": "665a060576de73cedbde7695",
+          "userIdFrom": "66585c44fb1c4bb8322adb3b",
+          "usernameUserFrom": "JoseHernandez",
+          "libraryUserFrom": [
+            "665861da889b4ca664d545b4"
+          ],
+          "phoneNumberUserFrom": "3512714562",
+          "status": "pendiente",
+          "actions": [],
+          "createdAt": "2024-05-31T17:16:53.508Z"
         }
-        
+
+    ExchangeRequestUserTo:
+      type: array
+      items:
+        $ref: "#/components/schemas/ExchangeObjectUserTo"
   securitySchemes:
     bearerAuth:
       type: http
