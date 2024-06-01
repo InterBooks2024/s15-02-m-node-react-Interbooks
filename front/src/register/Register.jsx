@@ -11,7 +11,10 @@ const Register = () => {
     const [errorGenres, setErrorGenres] = useState(false);
 
     function onChangeCountry(value){
-        setUserCountrySel(value)
+        const countryName = value.replace(/^[^\w\s]*/, '').trim();
+        setUserCountrySel(countryName);
+        // version de pais con Emoji
+        // setUserCountrySel(value);
     }
     useEffect(() => {
     }, [userCountrySel]);
@@ -27,7 +30,12 @@ const Register = () => {
     const authRegistro = async (dataUser) => {
         const RUTA = `${BASE_URL}${REGISTER}`;
         try {
-            const { data } = await axios.post(RUTA, dataUser);
+            const config = {
+                headers: {
+                  "Content-Type": "application/json"
+                },
+              };
+            const { data } = await axios.post(RUTA, dataUser, config);
             localStorage.setItem("jwt", data.token);
             
             // toast.success("Se ha registrado correctamente", {
@@ -46,8 +54,9 @@ const Register = () => {
         }
     }
 
-    // funcion del formulario
+    // funcion del formulario--- handlesubmit pertenece a react-hook-form
     const onSubmit = handleSubmit(async (data)=> {
+
         // data que necesita el POST      {
         //     "email": "usuarioprueba@example.com",
         //     "password": "Usuarioprueba1!",
@@ -60,11 +69,11 @@ const Register = () => {
         const body = {
             "email": data.email,
             "password": data.password,
-            "userName": data.userName,
-            "favouriteGenres": selectedGenres, //colocar un select
-            "country": userCountrySel, //colocar un select
-            "postalCode": data.postalCode,
-            "phoneNumber": data.phoneNumber,
+            "username": data.userName,
+            "favoriteGenres": selectedGenres, //colocar un select ??
+            "country": userCountrySel,
+            "postalCode": data.postalCode, //preguntar si es string
+            "phoneNumber": data.phoneNumber, //preguntar si es string
         }
         console.log(body)
         try {
@@ -145,8 +154,8 @@ const Register = () => {
                         message: "El nombre debe tener como máximo 30 caracteres"
                     },
                     pattern: {
-                        value: /^[a-zA-Z\s]{2,30}$/,
-                        message: "El nombre solo debe contener letras",
+                        value: /^[a-zA-Z0-9\s]{2,30}$/,
+                        message: "El nombre solo debe contener letras y números",
                     },
                     })}
                 />
@@ -211,12 +220,12 @@ const Register = () => {
                     {errors.password.message}
                     </span>
                 )}
-                {/* <p className="text-zinc-400">Tu contraseña debe contener:</p>
+                <p className="text-zinc-400">Tu contraseña debe contener:</p>
                 <ul className="list-disc text-xs">
                     <li className="text-green-500">8 letras como mínimo.</li>
                     <li className="text-red-500">Un caracter especial como mínimo.</li>
                     <li className="text-red-500">Un número como mínimo.</li>
-                </ul> */}
+                </ul>
             {/* Confirm Password */}
                 <label className="mt-4 block text-[16px] font-[600] text-zinc-400" htmlFor="confirmPassword">Repite tu contraseña *</label>
                 <input 
@@ -242,7 +251,7 @@ const Register = () => {
                 <SelectCountry onChange={onChangeCountry}
                                 id = "country"
                                 className ="my-2 px-[20px] w-full outline-none border-2 border-zinc-400 rounded-[20px] text-base  focus:border-cyan-400  text-zinc-600 h-10 placeholder:text-zinc-300" 
-
+                                name="country"
                 />   
 
                     {/* Phone Number */}
@@ -250,7 +259,7 @@ const Register = () => {
                 <input 
                     className="my-2 py-[10px] px-[20px] w-full outline-none border-2 border-zinc-400 rounded-[20px] text-base focus:border-cyan-400  text-zinc-600 h-10 placeholder:text-zinc-300" 
                     id="phoneNumber" 
-                    type="text"
+                    type="number"
                     placeholder="Escribe tu número de teléfono"
                     {...register("phoneNumber", {
                     required: {

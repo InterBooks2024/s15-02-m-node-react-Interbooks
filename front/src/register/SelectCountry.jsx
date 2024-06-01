@@ -14,6 +14,7 @@ export const SelectCountry = ({onChange, id, name, className}) => {
           setCountries(data.countries);
           setSelectedCountry(data.userSelectValue);
           setUserCountry(data.userSelectValue.label)
+          onChange(data.userSelectValue.label)
         });
     }, []);
 
