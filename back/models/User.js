@@ -1,46 +1,46 @@
-const mongoose = require ("mongoose")
+const mongoose = require("mongoose")
 
 const userSchema = new mongoose.Schema({
-    username:{
+    username: {
         type: String,
         required: true
     },
-    password:{
+    password: {
         type: String,
         required: true
     },
-    email:{
-        type:String,
+    email: {
+        type: String,
         required: true,
         unique: true
     },
-    favoriteGenres:{
-        type:[String],
-        default:[]
+    favoriteGenres: {
+        type: [String],
+        default: []
     },
-    books:[{
-        type:mongoose.Schema.Types.ObjectId,
-        default:[],
-        ref:"books"
+    books: [{
+        type: mongoose.Schema.Types.ObjectId,
+        default: [],
+        ref: "books"
     }],
-    country:{
-        type:String,
-        required:true
+    country: {
+        type: String,
+        required: true
     },
-    postalCode:{
-        type:String,
-        required:true
+    postalCode: {
+        type: String,
+        required: true
     },
-    phoneNumber:{  
+    phoneNumber: {
         type: String,
         required: true,
         validate: {
-            validator: function(v) {
-                return /^\d{10}$/.test(v)
+            validator: function (v) {
+                return /^\d{12}$/.test(v)
             },
             message: props => `${props.value} is not a valid phone number!`
         }
-    } 
+    }
 })
 
 userSchema.methods.toJSON = function () {
