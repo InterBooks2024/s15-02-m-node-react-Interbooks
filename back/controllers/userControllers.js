@@ -45,3 +45,14 @@ module.exports.userDelete = async (req,res) =>{
     
     return res.status(200).json({ message: result.message})
 }
+
+module.exports.addBookToWishList = async ( req,res ) =>{
+    const { bookId , userId } = req.body
+
+    try{
+        const wishList = await userServices.addToWishList(bookId,userId)
+        res.status(200).json({ wishList})
+    } catch (e) {
+        res.status(400).json({ error : error.message})
+    }
+}

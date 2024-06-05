@@ -23,6 +23,11 @@ const userSchema = new mongoose.Schema({
         default: [],
         ref: "books"
     }],
+    wishList: [{
+        type: mongoose.Schema.Types.ObjectId,
+        default: [],
+        ref: "books"
+    }],
     country: {
         type: String,
         required: true

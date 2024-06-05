@@ -1,4 +1,5 @@
 const User = require("../models/User")
+const BooksModel = require("../models/BooksModel")
 const bcrypt = require("bcrypt")
 
 module.exports.createUser = async ( email, password, username, favoriteGenres, country, postalCode, phoneNumber) =>{
@@ -52,5 +53,30 @@ module.exports.deleteUser = async (id) =>{
     } catch (e) {
         console.log("error when deleting user",e)
         return { error : "error when deleting user"}
+    }
+}
+
+module.exports.addToWishList = async (bookId, userId) =>{
+    try{
+        const book = await BooksModel.findById(bookId)
+
+        if (!book) {
+            return { error : "Book not found"}
+        }
+
+        const user = await User.findByIdAndUpdate(
+            {_id: userId},
+            {$addToSet:{wishList:bookId}},{new:true})
+        if (!user) {
+            return { error : "User not found"}
+        }
+
+        const userUpdated = await User.findById(userId).populate("wishList")
+
+        console.log("SERVICE",userUpdated)
+        return userUpdated.wishList
+    } catch (e) {
+        console.log("Error adding book a wishlist",e)
+        return { error: "Error adding book a wishlist"}
     }
 }
