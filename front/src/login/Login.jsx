@@ -26,6 +26,7 @@ const Login = () => {
               };
             const { data } = await axios.post(RUTA, dataUser, config);
             localStorage.setItem("jwt", data.jwt);
+            setLoading(false)
             
         } catch (error) {
             throw new Error(error.message);
@@ -44,12 +45,12 @@ const Login = () => {
             const rta = await authRegistro(body)
         // navigate(rutaInicio)
         } catch (error) {
-            setLoading(false)
             handleError(error)
         }
     })
     const handleError = (error) => {
         console.log('Error:', error)
+        setLoading(false)
         // throw toast.error(error.message, {   ver .promise
         //     position: "top-right",
         //     autoClose: 5000,
@@ -133,7 +134,7 @@ const Login = () => {
                 </ul> */}
                 <p className="text-zinc-400 mt-8 text-sm text-wrap underline">¿Olvidaste tu contraseña?</p>
 
-            <button // dissabled={loading}
+            <button type="submit" disabled={loading}
                 className="w-full mt-6 text-white bg-cyan-400 hover:bg-cyan-500 focus:ring-4 focus:bg-cyan-500 rounded-[20px] text-sm font-bold px-5 py-2.5 me-2 mb-2"
                 >
     {/*         {

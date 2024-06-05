@@ -37,7 +37,8 @@ const Register = () => {
               };
             const { data } = await axios.post(RUTA, dataUser, config);
             localStorage.setItem("jwt", data.token);
-            
+            setLoading(false)
+            return data
             // toast.success("Se ha registrado correctamente", {
             //     position: "top-right",
             //     autoClose: 5000,
@@ -81,12 +82,12 @@ const Register = () => {
             const rta = await authRegistro(body)
         // navigate(rutaInicio)
         } catch (error) {
-            setLoading(false)
             handleError(error)
         }
     })
     const handleError = (error) => {
         console.log('Error:', error)
+        setLoading(false)
         // throw toast.error(error.message, {
         //     position: "top-right",
         //     autoClose: 5000,
@@ -325,7 +326,7 @@ const Register = () => {
                 )}
                 </div>
 
-            <button 
+            <button type="submit" disabled={loading}
                 className="w-full mt-6 text-white bg-cyan-400 hover:bg-cyan-500 focus:ring-4 focus:bg-cyan-500 rounded-[20px] text-sm font-bold px-5 py-2.5 me-2 mb-2"
                 >
     {/*         {
