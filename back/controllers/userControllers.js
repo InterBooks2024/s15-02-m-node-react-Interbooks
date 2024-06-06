@@ -56,3 +56,23 @@ module.exports.addBookToWishList = async ( req,res ) =>{
         res.status(400).json({ error : error.message})
     }
 }
+
+module.exports.removeBookFromWishList = async ( req,res ) =>{
+    const { bookId , userId } = req.body
+    try{
+        const wishList = await userServices.removeFromWishList(bookId, userId)
+        res.status(200).json({ wishList })
+    } catch (e){
+        res.status(400).json({ error : error.message})
+    }
+}
+
+module.exports.getUserWishList = async ( req,res ) =>{
+    const { userId } = req.body
+    try{
+        const wishList = await userServices.getUserWishList(userId)
+        res.status(200).json({ wishList })
+    } catch(e){
+        res.status(400).json({ error: error.message})
+    }
+}

@@ -1,6 +1,7 @@
 const User = require("../models/User")
 const BooksModel = require("../models/BooksModel")
 const bcrypt = require("bcrypt")
+const BookModel = require("../models/BooksModel")
 
 module.exports.createUser = async ( email, password, username, favoriteGenres, country, postalCode, phoneNumber) =>{
     try{
@@ -71,11 +72,44 @@ module.exports.addToWishList = async (bookId, userId) =>{
             return { error : "User not found"}
         }
 
-        const userUpdated = await User.findById(userId)
-
-        return userUpdated.wishList
+        return user.wishList
     } catch (e) {
         console.log("Error adding book a wishlist",e)
         return { error: "Error adding book a wishlist"}
     }
 }
+
+module.exports.removeFromWishList = async (bookId, userId) =>{
+    try{
+        const book = await BooksModel.findById(bookId)
+        if (!book) {
+            return { error : "Book not found"}
+        }
+        
+        const userUpdated = await User.updateOne(
+            { _id : userId },
+            { $pull : { wishList : bookId }}
+        )
+        if (!userUpdated) {
+            return { error : "Error searching user"}
+        }
+
+        return userUpdated.wishList
+    } catch (e) {
+        console.log("Error deleting book of the wishList", e)
+        return { error : "Error deleting book of the wishList"}
+    }
+}
+
+module.exports.getUserWishList = async (userId) => {
+    try{
+        const user = await User.findById(userId)
+        if (!user){
+            return { error : "User not found"}
+        }
+        return user.wishList
+    } catch (e) {
+        console.log("Error getting the user wishList")
+        return { error : "Error getting the user wishList"}
+    }
+} 
