@@ -71,9 +71,8 @@ module.exports.addToWishList = async (bookId, userId) =>{
             return { error : "User not found"}
         }
 
-        const userUpdated = await User.findById(userId).populate("wishList")
+        const userUpdated = await User.findById(userId)
 
-        console.log("SERVICE",userUpdated)
         return userUpdated.wishList
     } catch (e) {
         console.log("Error adding book a wishlist",e)

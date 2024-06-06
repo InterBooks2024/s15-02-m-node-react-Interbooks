@@ -165,32 +165,12 @@ paths:
               schema:
                 type: json
                 example:
-                  _id: new ObjectId('66585c44fb1c4bb8322adb3b'),
-                  username: 'JoseHernandez',
-                  password: '$2b$10$ajG6DBfqEKONoOcZd3dCROZ2GYfikt9LT2aJdk16pGvQDX4xcWjfq',
-                  email: 'josehernandez@gmail.com',
-                  favoriteGenres: [ 'fiction', 'mystery' ],
-                  books: [ new ObjectId('665861da889b4ca664d545b4') ],
-                  country: 'Argentina',
-                  postalCode: '1870',
-                  phoneNumber: '3512714562',
-                  __v: 1,
-                  wishList: [
-                    {
-                      _id: new ObjectId('665861da889b4ca664d545b4'),
-                      title: 'El Gaucho Martín Fierro',
-                      author: 'José Hernández',
-                      genre: 'Fantasía',
-                      image: 'http://res.cloudinary.com/interbooks/image/upload/v1717066924/books/Martin_fierro_1894.jpg',
-                      languague: 'Español',
-                      actions: [Array],
-                      ISBN: '9789502317441',
-                      userId: new ObjectId('66585c44fb1c4bb8322adb3b'),
-                      __v: 0
-                    }
-                  ]
-
-        "404":
+                        {
+                          "wishList": [
+                                    "665861da889b4ca664d545b4"
+                                      ]
+                        }
+              "404":
           description: User not found
         "500":
           description: Internal server error
