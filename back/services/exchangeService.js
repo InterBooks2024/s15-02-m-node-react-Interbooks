@@ -40,8 +40,8 @@ const createExchangeRequest = async (bookId, userIdFrom) => {
   return { "message": "Exchange request created", exchangeRequest }
 };
 
-const getAllExchangeRequestUserFrom = async (userIdFrom) => {
-  const exchangeRequest = await ExchangeModel.find({ userIdFrom: userIdFrom }).select('userIdTo usernameUserTo actions status createdAt').lean()
+const getAllExchangeRequestUserFromPending = async (userIdFrom) => {
+  const exchangeRequest = await ExchangeModel.find({ userIdFrom: userIdFrom, status: 'pendiente' }).select('userIdTo usernameUserTo actions status createdAt').lean()
 
   const verifyUserFrom = await ExchangeModel.find({ userIdFrom: userIdFrom }).select('userIdFrom').lean()
 
@@ -52,9 +52,57 @@ const getAllExchangeRequestUserFrom = async (userIdFrom) => {
   return exchangeRequest
 }
 
+const getAllRequestUserFromNotPending = async (userIdFrom, filters) => {
+  const query = { userIdFrom, status: { $ne: 'pendiente' } }
+
+  if (filters) {
+    if (filters.usernameUserTo) {
+      query.usernameUserTo = filters.usernameUserTo
+    }
+
+    if (filters.startDate && filters.endDate) {
+      query.createdAt = { $gte: filters.startDate, $lte: filters.endDate }
+    }
+  }
+
+  const exchangeRequest = await ExchangeModel.find(query).select('userIdTo usernameUserTo actions status createdAt').lean()
+
+  return exchangeRequest
+};
+
+const cancelExchangeRequestUserFrom = async (exchangeId, userIdFrom) => {
+  try {
+    if (!isValidObjectId(exchangeId)) {
+      console.log(exchangeId)
+      return { error: 'Exchange request not found' }
+    }
+
+    const verifyUserFrom = await ExchangeModel.findById(exchangeId).select('userIdFrom status').lean()
+
+    if (!verifyUserFrom) {
+      return { error: 'Exchange request not found' }
+    }
+
+    if (verifyUserFrom.userIdFrom != userIdFrom) {
+      return { error: "User cannot modify this request" }
+    }
+
+    if (verifyUserFrom.status != 'pendiente') {
+      return { error: 'Only pending requests can be modified' }
+    }
+
+    const exchangeRequest = await ExchangeModel.findByIdAndDelete(exchangeId, { status: 'pendiente' })
+
+    return { message: 'Exchange request canceled', exchangeRequest }
+  } catch (error) {
+    console.log(error)
+    return { error: 'Error canceling exchange request' }
+  }
+}
+
 const deleteAllExchangeRequestUserFrom = async (userIdFrom) => {
   try {
-    const verifyUserFrom = await ExchangeModel.find({ userIdFrom: userIdFrom, status: { $ne: 'pendiente' } }).select('userIdFrom').lean()
+    const verifyUserFrom = await ExchangeModel.find({ userIdFrom: userIdFrom, status: { $ne: 'pendiente' } }).select('userIdFrom userIdTo').lean()
 
     if (!verifyUserFrom || verifyUserFrom.length === 0) {
       return { error: 'The user has no exchange requests' }
@@ -64,18 +112,23 @@ const deleteAllExchangeRequestUserFrom = async (userIdFrom) => {
       return { error: "The user is not the owner of the request" }
     }
 
-    const exchangeRequest = await ExchangeModel.deleteMany({ userIdFrom: userIdFrom, status: { $ne: 'pendiente' } })
+    verifyUserFrom.map(async (exchange) => {
+      if (exchange.userIdTo) {
+        await ExchangeModel.updateOne({ _id: exchange._id }, { $set: { userIdFrom: null } })
+      } else {
+        await ExchangeModel.deleteOne({ _id: exchange._id })
+      }
+    })
 
-
-    return { message: "All exchange requests submitted have been deleted", exchangeRequest }
+    return { message: "All exchange requests submitted have been deleted" }
   } catch (error) {
     console.log(error)
     return { error: 'Error deleting exchange request' }
   }
 }
 
-const getAllExchangeRequestUserTo = async (userIdTo) => {
-  const exchangeRequest = await ExchangeModel.find({ userIdTo: userIdTo }).select('userIdFrom usernameUserFrom actions status phoneNumberUserFrom createdAt libraryUserFrom').lean()
+const getAllExchangeRequestUserToPending = async (userIdTo) => {
+  const exchangeRequest = await ExchangeModel.find({ userIdTo: userIdTo, status: 'pendiente' }).select('userIdFrom usernameUserFrom actions status phoneNumberUserFrom createdAt libraryUserFrom').lean()
 
   const verifyUserTo = await ExchangeModel.find({ userIdTo: userIdTo }).select('userIdTo').lean()
 
@@ -86,9 +139,27 @@ const getAllExchangeRequestUserTo = async (userIdTo) => {
   return exchangeRequest
 }
 
+const getAllExchangeRequestUserToNotPending = async (userIdTo, filters) => {
+  const query = { userIdTo, status: { $ne: 'pendiente' } }
+
+  if (filters) {
+    if (filters.usernameUserFrom) {
+      query.usernameUserFrom = filters.usernameUserFrom
+    }
+
+    if (filters.startDate && filters.endDate) {
+      query.createdAt = { $gte: filters.startDate, $lte: filters.endDate }
+    }
+  }
+
+  const exchangeRequest = await ExchangeModel.find(query).select('userIdFrom usernameUserFrom actions status createdAt').lean()
+
+  return exchangeRequest
+}
+
 const deleteAllExchangeRequestUserTo = async (userIdTo) => {
   try {
-    const verifyUserTo = await ExchangeModel.find({ userIdTo: userIdTo, status: { $ne: 'pendiente' } }).select('userIdTo').lean()
+    const verifyUserTo = await ExchangeModel.find({ userIdTo: userIdTo, status: { $ne: 'pendiente' } }).select('userIdTo userIdFrom').lean()
 
     if (!verifyUserTo || verifyUserTo.length === 0) {
       return { error: 'The user has no exchange requests' }
@@ -98,10 +169,15 @@ const deleteAllExchangeRequestUserTo = async (userIdTo) => {
       return { error: "The user is not the owner of the request" }
     }
 
-    const exchangeRequest = await ExchangeModel.deleteMany({ userIdTo: userIdTo, status: { $ne: 'pendiente' } })
-
-
-    return { message: "All exchange requests received have been deleted", exchangeRequest }
+    verifyUserTo.map(async (exchange) => {
+      if (exchange.userIdFrom) {
+        await ExchangeModel.updateOne({ _id: exchange._id }, { $set: { userIdTo: null } })
+      } else {
+        await ExchangeModel.deleteOne({ _id: exchange._id })
+      }
+    })
+    
+    return { message: "All exchange requests received have been deleted" }
   } catch (error) {
     console.log(error)
     return { error: 'Error deleting exchange request' }
@@ -134,12 +210,17 @@ const acceptExchangeRequest = async (exchangeRequestId, userId, bookUserFrom) =>
   if (isValidObjectId(bookUserFrom) == false) {
     return { error: 'Book not found' }
   }
+
   const { userIdFrom, userIdTo } = exchangeRequest
   const book = await BookModel.findById(exchangeRequest.bookId)
   const bookToExchange = await BookModel.findById(bookUserFrom)
 
   if (!bookToExchange) {
     return { error: 'Book to exchange not found' }
+  }
+
+  if (bookToExchange.userId.toString() != userIdFrom.toString()) {
+    return { error: 'The user can only exchange books with the origin user' }
   }
 
   if (!book) {
@@ -158,7 +239,6 @@ const acceptExchangeRequest = async (exchangeRequestId, userId, bookUserFrom) =>
   await exchangeRequest.save()
   return { message: 'Book exchanged successfully', exchangeRequest }
 };
-
 
 const rejectExchangeRequest = async (exchangeRequestId, userId) => {
   const exchangeRequest = await ExchangeModel.findById(exchangeRequestId)
@@ -182,9 +262,12 @@ const rejectExchangeRequest = async (exchangeRequestId, userId) => {
 }
 
 module.exports = {
-  getAllExchangeRequestUserFrom,
+  getAllExchangeRequestUserFromPending,
+  getAllRequestUserFromNotPending,
+  cancelExchangeRequestUserFrom,
   deleteAllExchangeRequestUserFrom,
-  getAllExchangeRequestUserTo,
+  getAllExchangeRequestUserToPending,
+  getAllExchangeRequestUserToNotPending,
   deleteAllExchangeRequestUserTo,
   createExchangeRequest,
   acceptExchangeRequest,
