@@ -506,11 +506,7 @@ paths:
           content:
             application/json:
               example: {
-                          "message": "All exchange requests submitted have been deleted",
-                          "exchangeRequest": {
-                            "acknowledged": true,
-                            "deletedCount": 1
-                          }
+                          "message": "All exchange requests submitted have been deleted"
                         }
         "400":
           description: The user has no exchange requests
@@ -531,11 +527,7 @@ paths:
           content:
             application/json:
               example: {
-                          "message": "All exchange requests received have been deleted",
-                          "exchangeRequest": {
-                            "acknowledged": true,
-                            "deletedCount": 1
-                          }
+                          "message": "All exchange requests received have been deleted"
                         }
         "400":
           description: The user has no exchange requests
