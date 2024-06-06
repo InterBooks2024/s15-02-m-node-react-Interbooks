@@ -321,7 +321,7 @@ paths:
                   $ref: "#/components/schemas/ExchangeRequest"
                   example: {"status": "aceptada"}
           "400":
-            description: Only pending requests can be modified or Required book to exchange
+            description: Only pending requests can be modified or Required book to exchange or The user can only exchange books with the origin user
           "404":
             description: Exchange request not found or Book to exchange not found
           "403":
@@ -356,6 +356,33 @@ paths:
             description: Exchange request not found
           "500":
             description: Error exchanging book
+  /api/exchange/{exchangeId}/cancel:
+      delete:
+        security:
+          - bearerAuth: []
+        summary: Cancel exchange
+        tags: [Exchanges]
+        description: Cancel exchange request submitted by the user from
+        parameters:
+          - in: path
+            name: exchangeId
+            required: true
+            schema:
+              type: string
+        responses:
+          "200":
+            description: The exchange request was canceled successfully
+            content:
+              application/json:
+                example: {'message': 'Exchange request canceled'}
+          "400":
+            description: Only pending requests can be modified
+          "403":
+            description: User cannot modify this request
+          "404":
+            description: Exchange request not found
+          "500":
+            description: Error exchanging book
   /api/exchanges/sent:
     get:
       security:
@@ -374,6 +401,43 @@ paths:
           description: The user is not the owner of the request
         "500":
           description: Error getting received exchanges
+  /api/exchanges/history/sent:
+    get:
+      security:
+        - bearerAuth: []
+      summary: Get all sent exchanges with status not pending
+      tags: [Exchanges]
+      description: Get all sent exchanges with status not pending
+      parameters:
+        - in: query
+          name: usernameUserTo
+          required: false
+          schema:
+            type: string
+            example: Agathachristie
+        - in: query
+          name: startDate
+          required: false
+          schema:
+            type: string
+            example: 2022-02-01
+        - in: query
+          name: endDate
+          required: false
+          schema:
+            type: string
+            example: 2022-01-23
+      responses:
+        "200":
+          description: The user was successfully get all exchanges request sent
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExchangeRequestUserFrom"
+        "403":
+          description: The user is not the owner of the request
+        "500":
+          description: Error getting received exchanges
   /api/exchanges/received:
     get:
       security:
@@ -381,6 +445,43 @@ paths:
       summary: Get all exchanges received
       tags: [Exchanges]
       description: Get all exchanges request received
+      responses:
+        "200":
+          description: The user was successfully get all exchanges request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExchangeRequestUserTo"
+        "403":
+          description: The user is not the owner of the request
+        "500":
+          description: Error getting my exchanges
+  /api/exchanges/history/received:
+    get:
+      security:
+        - bearerAuth: []
+      summary: Get all exchanges received with status not pending
+      tags: [Exchanges]
+      description: Get all exchanges received with status not pending
+      parameters:
+        - in: query
+          name: usernameUserFrom
+          required: false
+          schema:
+            type: string
+            example: Agathachristie
+        - in: query
+          name: startDate
+          required: false
+          schema:
+            type: string
+            example: 2022-02-01
+        - in: query
+          name: endDate
+          required: false
+          schema:
+            type: string
+            example: 2022-01-23
       responses:
         "200":
           description: The user was successfully get all exchanges request
