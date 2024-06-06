@@ -170,10 +170,77 @@ paths:
                                     "665861da889b4ca664d545b4"
                                       ]
                         }
-              "404":
+        "404":
           description: User not found
         "500":
           description: Internal server error
+  /api/user/remove-from-wishlist:
+    post:
+      summary: Remove from wishlist a user
+      tags: [Users]
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Wishlist"
+      responses:
+        "201":
+          description: Delete book from user wishlist
+          content:
+            application/json:
+              schema:
+                type: json
+                example:
+                        {
+                          "wishList": [
+                                    "665861da889b4ca664d545b4"
+                                      ]
+                        }
+        "404":
+          description: User not found
+        "500":
+          description: Internal server error
+  /api/user/get-wishlist:
+    post:
+      summary: Get wishlist a user
+      tags: [Users]
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Wishlist"
+      responses:
+        "201":
+          description: Get wishlist 
+          content:
+            application/json:
+              schema:
+                type: json
+                example:
+                        {
+                          "wishList": [
+                                    "665861da889b4ca664d545b4"
+                                      ]
+                        }
+        "404":
+          description: User not found
+        "500":
+          description: Internal server error
+
   /api/books/get:
     get:
       summary: Get books
