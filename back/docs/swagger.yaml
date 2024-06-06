@@ -382,7 +382,7 @@ paths:
           "404":
             description: Exchange request not found
           "500":
-            description: Error exchanging book
+            description: Error when canceling exchange request
   /api/exchanges/sent:
     get:
       security:

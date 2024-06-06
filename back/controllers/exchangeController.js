@@ -52,7 +52,7 @@ const cancelExchangeRequestUserFrom = async (req, res) => {
       return res.status(400).json(exchangeRequest)
     }
 
-    if (exchangeRequest.error == "The user is not the owner of the request") {
+    if (exchangeRequest.error == "User cannot modify this request") {
       return res.status(403).json(exchangeRequest)
     }
 

@@ -84,7 +84,7 @@ const cancelExchangeRequestUserFrom = async (exchangeId, userIdFrom) => {
     }
 
     if (verifyUserFrom.userIdFrom != userIdFrom) {
-      return { error: "The user is not the owner of the request" }
+      return { error: "User cannot modify this request" }
     }
 
     if (verifyUserFrom.status != 'pendiente') {
