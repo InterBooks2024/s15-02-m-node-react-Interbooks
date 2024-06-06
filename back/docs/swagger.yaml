@@ -141,7 +141,39 @@ paths:
           description: User not found
         "500":
           description: Error when deleting user
-  
+  /api/user/add-to-wishlist:
+    post:
+      summary: Add to wishlist a user
+      tags: [Users]
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Wishlist"
+      responses:
+        "201":
+          description: User updated successfully
+          content:
+            application/json:
+              schema:
+                type: json
+                example:
+                        {
+                          "wishList": [
+                                    "665861da889b4ca664d545b4"
+                                      ]
+                        }
+              "404":
+          description: User not found
+        "500":
+          description: Internal server error
   /api/books/get:
     get:
       summary: Get books
