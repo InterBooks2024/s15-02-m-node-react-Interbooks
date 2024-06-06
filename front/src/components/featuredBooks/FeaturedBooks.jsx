@@ -1,9 +1,9 @@
 import { Cards } from "../Cards/Cards";
 
-const FeaturedBooks = () => {
+export const FeaturedBooks = () => {
   return (
     <section className="space-y-10 p-10 sm:p-10 bg-bg-200 rounded-md mx-auto">
-      <article className="grid grid-cols-1 grid-rows-6 sm:grid-cols-2 lg:grid-cols-5 gap-1 text-sm place-items-center mx-auto">
+      <article className="grid grid-cols-1 grid-rows-auto sm:grid-cols-2 lg:grid-cols-5 gap-1 text-sm place-items-center mx-auto">
         <Cards
           title="La Divina comedia"
           image="https://picsum.photos/200/300"
@@ -38,5 +38,3 @@ const FeaturedBooks = () => {
     </section>
   );
 };
-
-export default FeaturedBooks;

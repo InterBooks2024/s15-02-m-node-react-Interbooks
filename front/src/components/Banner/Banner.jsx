@@ -1,4 +1,4 @@
-const Banner = () => {
+export const Banner = () => {
   return (
     <section className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 gap-10 mx-auto items-center">
       <article className="flex flex-col">
@@ -146,5 +146,3 @@ const Banner = () => {
     </section>
   );
 };
-
-export default Banner;

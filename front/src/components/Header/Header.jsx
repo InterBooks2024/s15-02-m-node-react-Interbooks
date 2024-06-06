@@ -1,4 +1,3 @@
-import React from "react";
 
 export function Header () {
   return (
@@ -345,4 +344,3 @@ export function Header () {
   );
 }
 
-export default Header;

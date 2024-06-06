@@ -3,7 +3,7 @@ import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form";
 import { SelectCountry } from "./SelectCountry";
 
-const Register = () => {
+export const Register = () => {
     const BASE_URL = "https://s15-02-m-node-react-interbooks.onrender.com/api";
     const REGISTER = "/user/register";
     const [loading, setLoading] = useState(false)
@@ -17,6 +17,7 @@ const Register = () => {
         // setUserCountrySel(value);
     }
     useEffect(() => {
+        
     }, [userCountrySel]);
 
     const {
@@ -128,16 +129,15 @@ const Register = () => {
         }
     }
     return (
-        <div className="w-96 mx-auto">
+        <div className="max-w-md ">
             {/* <ToastContainer position="top-right" /> */}
-            <br /><br /><br />
             <h2 className="text-cyan-400 text-2xl font-bold mb-8">Registro</h2>
-            <form onSubmit={onSubmit} className="w-full my-0 mx-auto " noValidate>
+            <form onSubmit={onSubmit} className="w-full mx-auto " noValidate>
 
                     {/* User Name */}
-                <label className="mt-4 block text-[16px] font-[600] text-zinc-400" htmlFor="name">Nombre de Usuario *</label>
+                <label className="block font-[600] text-zinc-400" htmlFor="name">Nombre de Usuario *</label>
                 <input 
-                    className="my-2 py-[10px] px-[20px] w-full outline-none border-2 border-zinc-400 rounded-[20px] text-base focus:border-cyan-400  text-zinc-600 h-10 placeholder:text-zinc-300" 
+                    className="my-2 py-2 px-4 w-full outline-none border-2 border-zinc-400 rounded-3xl focus:border-cyan-400  text-zinc-600 h-10 placeholder:text-zinc-300" 
                     id="name" 
                     type="text"
                     placeholder="Escribe tu nombre"
@@ -167,9 +167,9 @@ const Register = () => {
                 )}
                     
                     {/* Email */}
-                <label className="mt-4 block text-[16px] font-[600] text-zinc-400" htmlFor="email">Correo Electrónico *</label>
+                <label className="block font-[600] text-zinc-400" htmlFor="email">Correo Electrónico *</label>
                 <input 
-                className="my-2 py-[10px] px-[20px] w-full outline-none border-2 border-zinc-400 rounded-[20px] text-base focus:border-cyan-400  text-zinc-600 h-10 placeholder:text-zinc-300" 
+                className="my-2 py-2 px-4 w-full outline-none border-2 border-zinc-400 rounded-3xl focus:border-cyan-400  text-zinc-600 h-10 placeholder:text-zinc-300" 
                 id="email" 
                 type="email"
                 placeholder="Escribe tu email"
@@ -191,9 +191,9 @@ const Register = () => {
                 )}
 
                     {/* Password */}
-                <label className="mt-4 block text-[16px] font-[600] text-zinc-400" htmlFor="password">Contraseña *</label>
+                <label className="block font-[600] text-zinc-400" htmlFor="password">Contraseña *</label>
                 <input 
-                    className="my-2 py-[10px] px-[20px] w-full outline-none border-2 border-zinc-400 rounded-[20px] text-base focus:border-cyan-400  text-zinc-600 h-10 placeholder:text-zinc-300" 
+                    className="my-2 py-2 px-4 w-full outline-none border-2 border-zinc-400 rounded-3xl focus:border-cyan-400  text-zinc-600 h-10 placeholder:text-zinc-300" 
                     id="password" 
                     type="password"
                     placeholder="Escribe tu contraseña"
@@ -228,9 +228,9 @@ const Register = () => {
                     <li className="text-red-500">Un número como mínimo.</li>
                 </ul>
             {/* Confirm Password */}
-                <label className="mt-4 block text-[16px] font-[600] text-zinc-400" htmlFor="confirmPassword">Repite tu contraseña *</label>
+                <label className="block font-[600] text-zinc-400" htmlFor="confirmPassword">Repite tu contraseña *</label>
                 <input 
-                    className="my-2 py-[10px] px-[20px] w-full outline-none border-2 border-zinc-400 rounded-[20px] text-base focus:border-cyan-400  text-zinc-600 h-10 placeholder:text-zinc-300" 
+                    className="my-2 py-2 px-4 w-full outline-none border-2 border-zinc-400 rounded-3xl focus:border-cyan-400  text-zinc-600 h-10 placeholder:text-zinc-300" 
                     id="confirmPassword" 
                     type="password"
                     placeholder="Escribe tu contraseña"
@@ -248,17 +248,17 @@ const Register = () => {
                     </span>
                 )}
                     {/* Country */}
-                <label className="mt-4 block text-[16px] font-[600] text-zinc-400" htmlFor="country">País *</label>
+                <label className="block font-[600] text-zinc-400" htmlFor="country">País *</label>
                 <SelectCountry onChange={onChangeCountry}
                                 id = "country"
-                                className ="my-2 px-[20px] w-full outline-none border-2 border-zinc-400 rounded-[20px] text-base  focus:border-cyan-400  text-zinc-600 h-10 placeholder:text-zinc-300" 
+                                className ="my-2 px-4 w-full outline-none border-2 border-zinc-400 rounded-3xl  focus:border-cyan-400  text-zinc-600 h-10 placeholder:text-zinc-300" 
                                 name="country"
                 />   
 
                     {/* Phone Number */}
-                <label className="mt-4 block text-[16px] font-[600] text-zinc-400" htmlFor="phoneNumber">Número de Teléfono *</label>
+                <label className="block font-[600] text-zinc-400" htmlFor="phoneNumber">Número de Teléfono *</label>
                 <input 
-                    className="my-2 py-[10px] px-[20px] w-full outline-none border-2 border-zinc-400 rounded-[20px] text-base focus:border-cyan-400  text-zinc-600 h-10 placeholder:text-zinc-300" 
+                    className="my-2 py-2 px-4 w-full outline-none border-2 border-zinc-400 rounded-3xl focus:border-cyan-400  text-zinc-600 h-10 placeholder:text-zinc-300" 
                     id="phoneNumber" 
                     type="number"
                     placeholder="Escribe tu número de teléfono"
@@ -283,9 +283,9 @@ const Register = () => {
                     </span>
                 )}
                     {/* Postal Code */}
-                <label className="mt-4 block text-[16px] font-[600] text-zinc-400" htmlFor="postalCode">Código Postal *</label>
+                <label className="block font-[600] text-zinc-400" htmlFor="postalCode">Código Postal *</label>
                 <input 
-                    className="my-2 py-[10px] px-[20px] w-full outline-none border-2 border-zinc-400 rounded-[20px] text-base focus:border-cyan-400  text-zinc-600 h-10  placeholder:text-zinc-300 " 
+                    className="my-2 py-2 px-4 w-full outline-none border-2 border-zinc-400 rounded-3xl focus:border-cyan-400  text-zinc-600 h-10  placeholder:text-zinc-300 " 
                     id="postalCode" 
                     type="number"
                     placeholder="Escribe tu Código Postal"
@@ -303,7 +303,7 @@ const Register = () => {
                 )}
                     {/* Checkbox de Géneros */}
                 <div>
-                <label className="mt-4 block text-[16px] font-[600] text-zinc-400" htmlFor="genres">Elige tus géneros favoritos</label>
+                <label className="block font-[600] text-zinc-400" htmlFor="genres">Elige tus géneros favoritos</label>
                     <div className="grid grid-cols-3 mt-4">
                         {genres.map((genre, index) => (
                             <div key={index} className="text-sm flex items-center gap-1 text-zinc-400">
@@ -327,7 +327,7 @@ const Register = () => {
                 </div>
 
             <button type="submit" disabled={loading}
-                className="w-full mt-6 text-white bg-cyan-400 hover:bg-cyan-500 focus:ring-4 focus:bg-cyan-500 rounded-[20px] text-sm font-bold px-5 py-2.5 me-2 mb-2"
+                className="w-full mt-6 text-white bg-cyan-400 hover:bg-cyan-500 focus:ring-4 focus:bg-cyan-500 rounded-3xl text-sm font-bold px-5 py-2.5 me-2 mb-2"
                 >
     {/*         {
                     loading ? <Spinner/> : <span>Enviar</span>
@@ -336,18 +336,16 @@ const Register = () => {
                 </button>
                 <p className="text-zinc-400 mt-8 text-sm text-wrap">Al hacer click en Resgistrarse, aceptas las <span className="text-cyan-400 underline cursor-pointer">Condiciones de uso de Interbook</span>, incluídas las <span className="text-cyan-400 underline cursor-pointer">Condiciones de Suscripción</span> y la <span className="text-cyan-400 underline cursor-pointer">Política de Privacidad</span>.</p>
             </form>
-            <h3 className="text-cyan-400 text-xl font-bold mt-16">¿Ya tienes una cuenta?</h3>
+            {/* <h3 className="text-cyan-400 text-xl font-bold mt-16">¿Ya tienes una cuenta?</h3>
             <button 
                 onClick={ console.log('Emi')
                 // ()=>navigate("/register")
             }
-            className="w-full mt-6 text-white bg-cyan-400 hover:bg-cyan-500 focus:ring-4 focus:bg-cyan-500 rounded-[20px] text-sm font-bold px-5 py-2.5 me-2 mb-2"
+            className="w-full mt-6 text-white bg-cyan-400 hover:bg-cyan-500 focus:ring-4 focus:bg-cyan-500 rounded-3xl text-sm font-bold px-5 py-2.5 me-2 mb-2"
             >
             INICIAR SESIÓN
-        </button>
+            </button> */}
 
         </div>
   )
 }
-
-export default Register
