@@ -15,7 +15,9 @@ tags:
   - name: Books
     description: Books
   - name: Users
-    description: Users
+    description: User
+  - name: Wishlist
+    description: Users wishlist
   - name: Exchanges
     description: Manage book exchanges, for all routes you must log in
 paths:
@@ -141,90 +143,21 @@ paths:
           description: User not found
         "500":
           description: Error when deleting user
-  /api/user/add-to-wishlist:
-    post:
-      summary: Add to wishlist a user
-      tags: [Users]
-      parameters:
-        - in: path
-          name: userId
-          required: true
-          schema:
-            type: string
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/Wishlist"
-      responses:
-        "201":
-          description: User updated successfully
-          content:
-            application/json:
-              schema:
-                type: json
-                example:
-                        {
-                          "wishList": [
-                                    "665861da889b4ca664d545b4"
-                                      ]
-                        }
-        "404":
-          description: User not found
-        "500":
-          description: Internal server error
-  /api/user/remove-from-wishlist:
-    post:
-      summary: Remove from wishlist a user
-      tags: [Users]
-      parameters:
-        - in: path
-          name: userId
-          required: true
-          schema:
-            type: string
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/Wishlist"
-      responses:
-        "201":
-          description: Delete book from user wishlist
-          content:
-            application/json:
-              schema:
-                type: json
-                example:
-                        {
-                          "wishList": [
-                                    "665861da889b4ca664d545b4"
-                                      ]
-                        }
-        "404":
-          description: User not found
-        "500":
-          description: Internal server error
+  
   /api/user/get-wishlist:
-    post:
+    get:
       summary: Get wishlist a user
-      tags: [Users]
-      parameters:
-        - in: path
-          name: userId
-          required: true
-          schema:
-            type: string
+      tags: [Wishlist]
       requestBody:
         required: true
         content:
           application/json:
-            schema:
-              $ref: "#/components/schemas/Wishlist"
+            example:
+              {
+                "bookId": "644e5sda4a9b74c54243",
+              }
       responses:
-        "201":
+        "200":
           description: Get wishlist 
           content:
             application/json:
@@ -239,7 +172,66 @@ paths:
         "404":
           description: User not found
         "500":
-          description: Internal server error
+          description: Error deleting book of the wishList
+  /api/user/add-to-wishlist:
+    post:
+      summary: Add to wishlist a user
+      tags: [Wishlist]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            example:
+              {
+                "bookId": "644e5sda4a9b74c54243",
+              }
+              
+      responses:
+        "201":
+          description: Add book to user wishlist
+          content:
+            application/json:
+              schema:
+                type: json
+                example:
+                        {
+                          "wishList": [
+                                    "665861da889b4ca664d545b4"
+                                      ]
+                        }
+        "404":
+          description: User not found or book not found
+        "500":
+          description: Error adding book a wishlist
+  /api/user/remove-from-wishlist:
+    delete:
+      summary: Remove from wishlist a user
+      tags: [Wishlist]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            example:
+              {
+                "bookId": "644e5sda4a9b74c54243",
+              }
+      responses:
+        "200":
+          description: Delete book from user wishlist
+          content:
+            application/json:
+              schema:
+                type: json
+                example:
+                        {
+                          "wishList": [
+                                    "665861da889b4ca664d545b4"
+                                      ]
+                        }
+        "404":
+          description: User not found
+        "500":
+          description: Error deleting book of the wishList
 
   /api/books/get:
     get:
@@ -537,6 +529,27 @@ paths:
           description: The user is not the owner of the request
         "500":
           description: Error getting received exchanges
+  /api/exchanges/delete/sent:
+    delete:
+      security:
+        - bearerAuth: []
+      summary: Delete all exchange request sent
+      tags: [Exchanges]
+      description: Delete all submitted exchange requests that are not pending
+      responses:
+        "200":
+          description: All exchanges requests submitted have been deleted
+          content:
+            application/json:
+              example: {
+                          "message": "All exchange requests submitted have been deleted"
+                        }
+        "400":
+          description: The user has no exchange requests
+        "403":
+          description: The user is not the owner of the request
+        "500":
+          description: Error exchanging book
   /api/exchanges/received:
     get:
       security:
@@ -592,27 +605,6 @@ paths:
           description: The user is not the owner of the request
         "500":
           description: Error getting my exchanges
-  /api/exchanges/delete/sent:
-    delete:
-      security:
-        - bearerAuth: []
-      summary: Delete all exchange request sent
-      tags: [Exchanges]
-      description: Delete all submitted exchange requests that are not pending
-      responses:
-        "200":
-          description: All exchanges requests submitted have been deleted
-          content:
-            application/json:
-              example: {
-                          "message": "All exchange requests submitted have been deleted"
-                        }
-        "400":
-          description: The user has no exchange requests
-        "403":
-          description: The user is not the owner of the request
-        "500":
-          description: Error exchanging book
   /api/exchanges/delete/received:
     delete:
       security:

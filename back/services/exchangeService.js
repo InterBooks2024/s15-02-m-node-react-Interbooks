@@ -176,7 +176,7 @@ const deleteAllExchangeRequestUserTo = async (userIdTo) => {
         await ExchangeModel.deleteOne({ _id: exchange._id })
       }
     })
-    
+
     return { message: "All exchange requests received have been deleted" }
   } catch (error) {
     console.log(error)
