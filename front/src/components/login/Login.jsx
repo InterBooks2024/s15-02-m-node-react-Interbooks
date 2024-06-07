@@ -1,12 +1,17 @@
 import axios from "axios";
 import { useState } from "react"
 import { useForm } from "react-hook-form";
+import { Link, useNavigate } from "react-router-dom";
+import { useUserContext } from "../../hooks/useUser";
 
 
-const Login = () => {
+export const Login = () => {
+    
     const BASE_URL = "https://s15-02-m-node-react-interbooks.onrender.com/api";
     const LOGIN = "/auth/login";
     const [loading, setLoading] = useState(false)
+    const navigate = useNavigate()
+    const {setTokenJwt} = useUserContext()
 
     const {
         register,
@@ -25,8 +30,9 @@ const Login = () => {
                 },
               };
             const { data } = await axios.post(RUTA, dataUser, config);
-            localStorage.setItem("jwt", data.jwt);
+            setTokenJwt(data.Bearer);
             setLoading(false)
+            return data
             
         } catch (error) {
             throw new Error(error.message);
@@ -39,11 +45,10 @@ const Login = () => {
             "email": data.email,
             "password": data.password,
         }
-        console.log(body)
         try {
             setLoading(true)
-            const rta = await authRegistro(body)
-        // navigate(rutaInicio)
+            await authRegistro(body)
+            navigate('/')
         } catch (error) {
             handleError(error)
         }
@@ -142,11 +147,9 @@ const Login = () => {
                 }       */}
                 <span>INICIAR SESIÓN</span>
                 </button>
-                <p className="text-zinc-400 mt-8 text-sm text-wrap">¿No tienes una cuenta con nosotros? <span className="text-cyan-400 cursor-pointer underline">Regístrate</span></p>
+                <p className="text-zinc-400 mt-8 text-sm text-wrap">¿No tienes una cuenta con nosotros? <Link to='/register' className="text-cyan-400 cursor-pointer underline">Regístrate</Link></p>
                 <p className="text-zinc-400 mt-8 text-sm text-wrap">Al iniciar sesión o continuar, aceptas las <span className="text-cyan-400 cursor-pointer underline">Condiciones de uso</span> y la <span className="text-cyan-400 underline cursor-pointer">Política de Privacidad</span>de Interbook.</p>
             </form>
         </div>
   )
 }
-
-export default Login

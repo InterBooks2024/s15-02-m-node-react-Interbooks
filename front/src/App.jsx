@@ -1,35 +1,24 @@
-import { Routes, Route } from 'react-router-dom'
-// import {Header} from "./Header/Header";
-// import {Hero} from "./Hero/Hero";
-import { Footer } from './Footer/footer';
-import {Navbar} from "./Navbar/Navbar";
-import Register from "./register/Register";
-import Login from "./login/Login";
-import Banner from './components/Banner/Banner';
-import FeaturedBooks from './components/featuredBooks/FeaturedBooks';
+import { Routes, Route, BrowserRouter } from 'react-router-dom'
+import { UserProvider } from './context/UserContext';
+import { Home } from './views/home/Home';
+import { RegisterView } from './views/register/RegisterView';
+import { LoginView } from './views/login/LoginView';
+import { Footer, Navbar } from './components';
 
 
 function App() {
   return (
-    <>
-      <Navbar/>
-      
-      <Routes>
-          <Route path='/' element={ 
-              <>    
-                      <Banner/>
-                      <FeaturedBooks/>
-                      {/* <Hero/>
-                      <Header/> */}
-              </>
-          } />
-          <Route path='/register' element={ <Register />} />
-          <Route path='/login' element={ <Login />} />
-          <Route path='/banner' element={ <Banner />} />
-
-      </Routes>
-      <Footer/>
-    </>
+    <UserProvider>
+      <BrowserRouter>
+        <Navbar/>
+        <Routes>
+            <Route path='/' element={<Home/>}/>
+            <Route path='/register' element={ <RegisterView />} />
+            <Route path='/login' element={ <LoginView />} />
+        </Routes>
+        <Footer/>
+      </BrowserRouter>
+    </UserProvider>
   );
 }
 

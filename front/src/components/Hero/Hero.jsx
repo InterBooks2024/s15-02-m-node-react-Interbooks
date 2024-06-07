@@ -10,8 +10,6 @@ export function Hero() {
             Buscas, Encontras y cambias.
             Asi de facil con Interbook.
           </p>
-          
-         
         </div>
         <div className="hidden lg:mt-0 lg:col-span-5 lg:flex">
           <img
@@ -23,5 +21,3 @@ export function Hero() {
     </section>
   );
 }
-
-export default Hero;
