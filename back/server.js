@@ -5,6 +5,8 @@ const authRoutes = require("./routes/auth.routes.js")
 const homeRoutes = require("./routes/home.routes.js")
 const bookRoutes = require("./routes/book.routes.js")
 const exchangeRoutes = require("./routes/exchange.routes.js")
+const userRoutes = require("./routes/userRoutes")
+const wishListRoutes = require("./routes/wishListRoutes.js")
 const passport = require('passport');
 require('./middlewares/auth.middlewares');
 require("dotenv").config()
@@ -18,7 +20,6 @@ app.use(passport.initialize());
 app.disable("x-powered-by")
 
 const connectDB = require("./db/connect")
-const userRoutes = require("./routes/userRoutes")
 
 const DB_URL = process.env.DB_URL
 const PORT = process.env.PORT || 3000
@@ -43,3 +44,4 @@ app.use("/api", authRoutes)
 app.use("/api", homeRoutes)
 app.use("/api", bookRoutes)
 app.use("/api", exchangeRoutes)
+app.use("/api", wishListRoutes)

@@ -2,8 +2,7 @@ const User = require("../models/User")
 const bcrypt = require("bcrypt")
 const userServices = require("../services/userServices")
 
-
-module.exports.userRegister = async (req, res) => {
+const userRegister = async (req, res) => {
     const { email, password, username, favoriteGenres, country, postalCode, phoneNumber } = req.body
 
     const result = await userServices.createUser(email, password, username, favoriteGenres, country, postalCode, phoneNumber)
@@ -19,7 +18,7 @@ module.exports.userRegister = async (req, res) => {
     return res.status(201).json({ message: result.message, user: result.user })
 }
 
-module.exports.userUpdate = async (req, res) => {
+const userUpdate = async (req, res) => {
     const id = req.params.id
     const updateData = req.body
     try {
@@ -30,7 +29,7 @@ module.exports.userUpdate = async (req, res) => {
     }
 }
 
-module.exports.userDelete = async (req, res) => {
+const userDelete = async (req, res) => {
     const { id } = req.params.id
 
     const result = await userServices.deleteUser(id)
@@ -46,47 +45,4 @@ module.exports.userDelete = async (req, res) => {
     return res.status(200).json({ message: result.message })
 }
 
-module.exports.addBookToWishList = async (req, res) => {
-    const userId = req.user.id
-    const { bookId } = req.body
-    try {
-        const wishList = await userServices.addToWishList(bookId, userId)
-
-        if (wishList.error) {
-            return res.status(404).json(wishList)
-        }
-
-        res.status(201).json({ wishList })
-    } catch (e) {
-        res.status(500).json({ error: error.message })
-    }
-}
-
-module.exports.removeBookFromWishList = async (req, res) => {
-    const userId = req.user.id
-    const { bookId } = req.body
-    try {
-        const wishList = await userServices.removeFromWishList(bookId, userId)
-
-        if (wishList.error) {
-            return res.status(404).json(wishList)
-        }
-        res.status(200).json({ wishList })
-    } catch (e) {
-        res.status(500).json({ error: error.message })
-    }
-}
-
-module.exports.getUserWishList = async (req, res) => {
-    const userId = req.user.id
-    try {
-        const wishList = await userServices.getUserWishList(userId)
-
-        if (wishList.error) {
-            return res.status(404).json(wishList)
-        }
-        res.status(200).json({ wishList })
-    } catch (e) {
-        res.status(500).json({ error: error.message })
-    }
-}
+module.exports = { userRegister, userUpdate, userDelete}
