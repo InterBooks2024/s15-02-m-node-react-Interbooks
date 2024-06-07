@@ -1,84 +1,58 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import logo from "./logo.svg";
+import { Link, useNavigate } from "react-router-dom";
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
   return (
-    <nav className="w-full fixed top-0 left-0 right-0 z-10 bg-transparent">
+    <nav className="w-full h-12 fixed top-0 left-0 right-0 z-10 bg-transparent">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center">
-            <svg
-              width="40"
-              height="40"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              className="mr-2"
+            
+            <Link
+              to="/"
+              className="text-lg font-semibold text-interbook-400 hover:text-interbook-500"
             >
-              <path d="M12 2L2 7l10 5 10-5L12 2z" fill="#3498db" />
-              <path d="M12 13l10-5v10l-10 5-10-5V8l10 5z" fill="#2980b9" />
-            </svg>
-            <a
-              href="#"
-              className="text-lg font-semibold"
-              style={{ color: "#33CCCC", transition: "color 0.3s" }}
-              onMouseEnter={(e) => (e.target.style.color = "grey")}
-              onMouseLeave={(e) => (e.target.style.color = "#33CCCC")}
-            >
-              Interbook
-            </a>
+              <img src={logo} alt="Logo Interbooks" height='32'/>
+            </Link>
           </div>
           <div className="hidden md:block">
             <div className="ml-10 flex items-baseline space-x-4">
-              <a
-                href="#"
-                className="text-lg font-semibold"
-                style={{ color: "#33CCCC", transition: "color 0.3s" }}
-                onMouseEnter={(e) => (e.target.style.color = "grey")}
-                onMouseLeave={(e) => (e.target.style.color = "#33CCCC")}
+              <Link to="/"
+                className="text-lg font-semibold  text-interbook-400 hover:text-interbook-500"
               >
                 Home
-              </a>
-              <a
-                href="#"
-                className="text-lg font-semibold"
-                style={{ color: "grey", transition: "color 0.3s" }}
-                onMouseEnter={(e) => (e.target.style.color = "#33CCCC")}
-                a
-                onMouseLeave={(e) => (e.target.style.color = "#33CCCC")}
+              </Link>
+              <Link to="#"
+                className="text-lg font-semibold  text-interbook-400 hover:text-interbook-500"
               >
                 Biblioteca
-              </a>
-              <a
-                href="#"
-                className="text-lg font-semibold"
-                style={{ color: "grey", transition: "color 0.3s" }}
-                onMouseEnter={(e) => (e.target.style.color = "#33CCCC")}
-                onMouseLeave={(e) => (e.target.style.color = "#33CCCC")}
+              </Link>
+              <Link to="#"
+                className="text-lg font-semibold  text-interbook-400 hover:text-interbook-500"
               >
                 Wishlist
-              </a>
-              <a
-                href="#"
-                className="text-lg font-semibold"
-                style={{ color: "grey", transition: "color 0.3s" }}
-                onMouseEnter={(e) => (e.target.style.color = "#33CCCC")}
-                onMouseLeave={(e) => (e.target.style.color = "#33CCCC")}
+              </Link>
+              <Link to="#"
+                className="text-lg font-semibold  text-interbook-400 hover:text-interbook-500"
               >
                 Intercambios
-              </a>
+              </Link>
             </div>
           </div>
           <div className="relative">
             <input
               type="text"
               placeholder="Busqueda"
-              className="bg-white-800 text-gray-300 rounded-full border-2 border-teal-400 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-teal-400"
+              className="bg-white-800 text-gray-300 focus:text-gray-600 rounded-full border-2 border-interbook-400 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:border-interbook-500"
             />
           </div>
           <button
+            onClick={() => navigate("/login")}
             type="button"
-            className="ml-4 bg-teal-400 text-white px-4 py-2 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-teal-400"
+            className="ml-4 bg-interbook-400 text-white font-bold px-4 py-2 rounded-full cursor-pointer focus:outline-none focus:ring-2 hover:bg-interbook-500"
           >
             Iniciar sesión
           </button>
