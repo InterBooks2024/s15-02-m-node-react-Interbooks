@@ -1,19 +1,26 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 
 
 export const UserContext = createContext(null)
 
 export const UserProvider = ({children}) => {
-    const [tokenJwt, setTokenJwt] = useState(null)
-    const [user, setUser] = useState(null)
+    const storageToken = localStorage.getItem("jwt") || ''
+    const storageUserId = localStorage.getItem("userId") || ''
+    const [tokenJwt, setTokenJwt] = useState(storageToken)
+    const [userId, setUserId] = useState(storageUserId)
 
 
     useEffect(()=>{
-        localStorage.setItem("jwt", tokenJwt)
-    },[tokenJwt])
+        if(tokenJwt?.length && userId?.length){
+            localStorage.setItem("jwt", tokenJwt)
+            localStorage.setItem("userId", userId)
+        }
+    },[tokenJwt, userId])
     return (
         <UserContext.Provider value={{
-            user,
+            userId,
+            setUserId,
+            tokenJwt,
             setTokenJwt
         }}>
             {children}
