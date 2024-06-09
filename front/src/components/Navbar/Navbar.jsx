@@ -1,12 +1,24 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import logo from "./logo.svg";
 import { Link, useNavigate } from "react-router-dom";
+import { useUserContext } from "../../hooks/useUser";
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
+  const {userId, setUserId, setTokenJwt} = useUserContext()
+
+  const handleLogOut = () => {
+    localStorage.removeItem("jwt")
+    localStorage.removeItem("userId")
+    setTokenJwt(null)
+    setUserId(null)
+    navigate("/")
+  }
+  const isLogged = useMemo(()=> userId?.length, [userId])
+  
   return (
-    <nav className="w-full h-12 fixed top-0 left-0 right-0 z-10 bg-transparent">
+    <nav className="w-full fixed top-0 left-0 right-0 z-10 bg-white/90 backdrop-blur-sm h-18">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center">
@@ -42,20 +54,29 @@ export function Navbar() {
               </Link>
             </div>
           </div>
-          <div className="relative">
+          <div className="relative hidden">
             <input
               type="text"
               placeholder="Busqueda"
               className="bg-white-800 text-gray-300 focus:text-gray-600 rounded-full border-2 border-interbook-400 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:border-interbook-500"
             />
           </div>
-          <button
-            onClick={() => navigate("/login")}
-            type="button"
-            className="ml-4 bg-interbook-400 text-white font-bold px-4 py-2 rounded-full cursor-pointer focus:outline-none focus:ring-2 hover:bg-interbook-500"
-          >
-            Iniciar sesión
-          </button>
+          {
+            !isLogged
+            ? <Link
+                to='/login'
+                className="bg-interbook-400 w-full max-w-36 flex justify-center items-center text-white font-bold md:px-2 py-2 rounded-full cursor-pointer focus:outline-none focus:ring-2 hover:bg-interbook-500"
+              >
+              Iniciar sesión
+              </Link>
+              : <button
+                  onClick={handleLogOut}
+                  type="button"
+                  className="ml-4 bg-interbook-400 text-white font-bold px-4 py-2 rounded-full cursor-pointer focus:outline-none focus:ring-2 hover:bg-interbook-500"
+                >
+                  Salir
+                </button>
+          }
           <div className="-mr-2 flex md:hidden">
             <button
               type="button"

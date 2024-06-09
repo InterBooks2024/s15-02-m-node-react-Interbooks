@@ -11,7 +11,7 @@ export const Login = () => {
     const LOGIN = "/auth/login";
     const [loading, setLoading] = useState(false)
     const navigate = useNavigate()
-    const {setTokenJwt} = useUserContext()
+    const {setTokenJwt, setUserId} = useUserContext()
 
     const {
         register,
@@ -31,6 +31,7 @@ export const Login = () => {
               };
             const { data } = await axios.post(RUTA, dataUser, config);
             setTokenJwt(data.Bearer);
+            setUserId(data.userId)
             setLoading(false)
             return data
             
@@ -70,7 +71,7 @@ export const Login = () => {
     };
     
     return (
-        <div className="w-96 mx-auto">
+        <div className="w-full max-w-md mx-auto">
             {/* <ToastContainer position="top-right" /> */}
             <br /><br /><br />
             <h2 className="text-cyan-400 text-2xl font-bold mb-8">Iniciar sesión</h2>
