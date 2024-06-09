@@ -7,6 +7,7 @@ import { Footer, Navbar } from './components';
 import { BookProvider } from './context/BookContext';
 import { NewBook } from './views/new-book/NewBook';
 import { ProtectedRoute } from './routes/ProtectedRoute';
+import { Profile } from './components/profile/Profile';
 
 
 function App() {
@@ -22,6 +23,11 @@ function App() {
                 <ProtectedRoute>
                   <NewBook/>
                 </ProtectedRoute> 
+              }/>
+              <Route path='/profile' element={
+                // <ProtectedRoute>
+                  <Profile/>
+                // </ProtectedRoute> 
               }/>
               <Route path='/login' element={ <LoginView />} />
           </Routes>

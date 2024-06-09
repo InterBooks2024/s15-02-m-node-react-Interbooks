@@ -18,9 +18,17 @@ export function Navbar() {
   const isLogged = useMemo(()=> userId?.length, [userId])
   
   return (
-    <nav className="w-full fixed top-0 left-0 right-0 z-10 bg-white/90 backdrop-blur-sm h-18">
+    <>
+    <div className="espacio-solido w-full h-20"></div>  
+    <nav className="w-full h-20 fixed top-0 left-0 right-0 z-10 bg-transparent"
+          style={{
+            WebkitBackdropFilter: 'blur(10px) saturate(180%)',
+            backdropFilter: 'blur(10px) saturate(180%)',
+            backgroundColor: '#f1fcfb23',
+          }}
+      >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center justify-between h-20">
           <div className="flex items-center">
             
             <Link
@@ -106,6 +114,7 @@ export function Navbar() {
         </div>
       </div>
     </nav>
+    </>
   );
 }
 
