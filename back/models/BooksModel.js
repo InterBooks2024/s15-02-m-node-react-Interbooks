@@ -34,7 +34,6 @@ const bookSchema = new mongoose.Schema({
   }],
   ISBN: {
     type: String,
-    unique: true,
     sparse: true,
   },
   synopsis: {
