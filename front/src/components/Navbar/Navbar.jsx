@@ -62,7 +62,7 @@ export function Navbar() {
               </Link>
             </div>
           </div>
-          <div className="relative hidden">
+          <div className="relative">
             <input
               type="text"
               placeholder="Busqueda"
