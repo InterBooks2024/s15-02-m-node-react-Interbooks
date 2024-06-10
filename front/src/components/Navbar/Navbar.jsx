@@ -50,15 +50,15 @@ export function Navbar() {
               >
                 Biblioteca
               </Link>
-              <Link to="profile/mywhishlist"
-                className="text-lg font-semibold  text-interbook-400 hover:text-interbook-500"
-              >
-                Wishlist
-              </Link>
               <Link to="profile/myexchanges"
                 className="text-lg font-semibold  text-interbook-400 hover:text-interbook-500"
               >
                 Intercambios
+              </Link>
+              <Link to="profile/mywhishlist"
+                className="text-lg font-semibold  text-interbook-400 hover:text-interbook-500"
+              >
+                Wishlist
               </Link>
             </div>
           </div>

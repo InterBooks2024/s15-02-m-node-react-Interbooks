@@ -5,8 +5,10 @@ import { MyExchanges } from "../myexchanges/MyExchanges";
 import { MyWhishlist } from "../myWishlist/MyWhishlist";
 import { MyProfile } from "../myProfile/MyProfile";
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useUserContext } from "../../hooks/useUser";
 
 export const Profile = () => {
+    const {tokenJwt, userId} = useUserContext()
     const location = useLocation()
     const navigate = useNavigate();
     useEffect(() => {
@@ -82,10 +84,10 @@ export const Profile = () => {
 
       {/* <div className={`sidebar-subcategory-container select-none ${tab === '2' ? 'sidebar-sub-cont2' : (tab === '3' ? 'sidebar-sub-cont3' : (tab === '4' ? 'sidebar-sub-cont4' : ""))}`}> */}
       <div className='p-4'>
-          {tab === '1' && <MyLibrary/>}
-          {tab === '2' && <MyExchanges/>}
-          {tab === '3' && <MyWhishlist/>}
-          {tab === '4' && <MyProfile/>}
+          {tab === '1' && <MyLibrary tokenJwt={tokenJwt} userId={userId} />}
+          {tab === '2' && <MyExchanges tokenJwt={tokenJwt} userId={userId}/>}
+          {tab === '3' && <MyWhishlist tokenJwt={tokenJwt} userId={userId}/>}
+          {tab === '4' && <MyProfile tokenJwt={tokenJwt} userId={userId}/>}
 
       </div>
 
