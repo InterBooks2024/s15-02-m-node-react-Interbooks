@@ -25,6 +25,19 @@ const createUser = async (email, password, username, favoriteGenres, country, po
     }
 }
 
+const getUserData = async (id) => {
+    try {
+        const user = await User.findById(id)
+        if (!user) {
+            return { error: "User not found" }
+        }
+        return user
+    } catch (e) {
+        console.log("Error getting user data", e)
+        return { error: "Error getting user data" }
+    }
+}
+
 const updateUser = async (id, updateData) => {
     try {
         const userUpdated = await User.findByIdAndUpdate(id, { $set: updateData }, { new: true, runValidators: true })
@@ -55,4 +68,4 @@ const deleteUser = async (id) => {
     }
 }
 
-module.exports = { createUser, updateUser, deleteUser}
+module.exports = { createUser, updateUser, deleteUser, getUserData}

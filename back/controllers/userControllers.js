@@ -18,6 +18,16 @@ const userRegister = async (req, res) => {
     return res.status(201).json({ message: result.message, user: result.user })
 }
 
+const getUserData = async (req, res) => {
+    const id = req.params.id
+    try {
+        const user = await userServices.getUserData(id)
+        res.status(200).json(user)
+    } catch (e) {
+        res.status(400).json({ error: error.message })
+    }
+}
+
 const userUpdate = async (req, res) => {
     const id = req.params.id
     const updateData = req.body
@@ -45,4 +55,4 @@ const userDelete = async (req, res) => {
     return res.status(200).json({ message: result.message })
 }
 
-module.exports = { userRegister, userUpdate, userDelete}
+module.exports = { userRegister, userUpdate, userDelete, getUserData}
