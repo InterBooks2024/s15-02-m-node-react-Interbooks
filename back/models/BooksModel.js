@@ -35,6 +35,7 @@ const bookSchema = new mongoose.Schema({
   ISBN: {
     type: String,
     sparse: true,
+    nullable: true
   },
   synopsis: {
     type: String,
