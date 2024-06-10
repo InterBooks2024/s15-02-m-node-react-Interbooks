@@ -3,6 +3,7 @@ import { Cards } from "../Cards/Cards";
 export const FeaturedBooks = () => {
   return (
     <section className="space-y-10 bg-bg-200 rounded-md mx-auto w-full mt-10">
+      <h3 className="mt-16 text-2xl font-bold text-interbook-400">DESTACADOS</h3>
       <article className="flex flex-wrap gap-10 text-sm items-center justify-center mx-auto ">
         <Cards
           title="La Divina comedia"

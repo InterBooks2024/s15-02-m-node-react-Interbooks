@@ -20,7 +20,7 @@ export function Navbar() {
   return (
     <>
     <div className="espacio-solido w-full h-20"></div>  
-    <nav className="w-full h-20 fixed top-0 left-0 right-0 z-10 bg-transparent"
+    <nav className="w-full h-20 fixed top-0 left-0 right-0 z-50 bg-transparent"
           style={{
             WebkitBackdropFilter: 'blur(10px) saturate(180%)',
             backdropFilter: 'blur(10px) saturate(180%)',
@@ -62,7 +62,7 @@ export function Navbar() {
               </Link>
             </div>
           </div>
-          <div className="relative hidden">
+          <div className="relative">
             <input
               type="text"
               placeholder="Busqueda"

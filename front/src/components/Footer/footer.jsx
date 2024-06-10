@@ -2,11 +2,11 @@ import { Link } from "react-router-dom";
 
 export function Footer() {
   return (
-    <footer className="bg-primary rounded-t-lg mt-5 sm:flex sm:items-center sm:justify-between p-4 sm:p-6 xl:p-8 dark:bg-gray-800 antialiased">
+    <footer className="bg-primary rounded-t-lg mt-5 sm:flex sm:items-center sm:justify-between p-4 sm:p-6 xl:p-8 bg-interbook-800 antialiased">
       <p className="mb-4 text-sm text-center text-gray-500 dark:text-gray-400 sm:mb-0">
         &copy; 2024-2025{" "}
         <Link
-          href="https://flowbite.com/"
+          href="/"
           className="hover:underline"
           target="_blank"
           rel="noopener noreferrer"
