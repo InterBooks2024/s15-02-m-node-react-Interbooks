@@ -17,7 +17,6 @@ export const Login = () => {
         register,
         handleSubmit,
         formState: { errors },
-        watch
       } = useForm();
 
       //funcion aparte por si la queremos trasladar a un hook
@@ -73,8 +72,7 @@ export const Login = () => {
     return (
         <div className="w-full max-w-md mx-auto">
             {/* <ToastContainer position="top-right" /> */}
-            <br /><br /><br />
-            <h2 className="text-cyan-400 text-2xl font-bold mb-8">Iniciar sesión</h2>
+            <h2 className="text-cyan-400 text-2xl font-bold mb-8 text-center">Iniciar sesión</h2>
             <form onSubmit={onSubmit} className="w-full my-0 mx-auto " noValidate>
 
                     {/* Email */}
@@ -132,12 +130,6 @@ export const Login = () => {
                     {errors.password.message}
                     </span>
                 )}
-                {/* <p className="text-zinc-400">Tu contraseña debe contener:</p>
-                <ul className="list-disc text-xs">
-                    <li className="text-green-500">8 letras como mínimo.</li>
-                    <li className="text-red-500">Un caracter especial como mínimo.</li>
-                    <li className="text-red-500">Un número como mínimo.</li>
-                </ul> */}
                 <p className="text-zinc-400 mt-8 text-sm text-wrap underline">¿Olvidaste tu contraseña?</p>
 
             <button type="submit" disabled={loading}

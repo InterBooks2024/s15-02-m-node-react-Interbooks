@@ -129,9 +129,9 @@ export const Register = () => {
         }
     }
     return (
-        <div className="max-w-md w-full">
+        <section className="max-w-md w-full">
             {/* <ToastContainer position="top-right" /> */}
-            <h2 className="text-cyan-400 text-2xl font-bold mb-8">Registro</h2>
+            <h2 className="text-cyan-400 text-2xl font-bold mb-8 text-center">Registro</h2>
             <form onSubmit={onSubmit} className="w-full mx-auto " noValidate>
 
                     {/* User Name */}
@@ -346,6 +346,6 @@ export const Register = () => {
             INICIAR SESIÓN
             </button> */}
 
-        </div>
+        </section>
   )
 }

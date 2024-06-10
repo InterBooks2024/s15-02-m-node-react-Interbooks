@@ -45,20 +45,20 @@ export function Navbar() {
               >
                 Home
               </Link>
-              <Link to="#"
+              <Link to="/profile/mylibrary"
                 className="text-lg font-semibold  text-interbook-400 hover:text-interbook-500"
               >
                 Biblioteca
               </Link>
-              <Link to="#"
-                className="text-lg font-semibold  text-interbook-400 hover:text-interbook-500"
-              >
-                Wishlist
-              </Link>
-              <Link to="#"
+              <Link to="profile/myexchanges"
                 className="text-lg font-semibold  text-interbook-400 hover:text-interbook-500"
               >
                 Intercambios
+              </Link>
+              <Link to="profile/mywhishlist"
+                className="text-lg font-semibold  text-interbook-400 hover:text-interbook-500"
+              >
+                Wishlist
               </Link>
             </div>
           </div>
