@@ -5,21 +5,21 @@ export const UserContext = createContext(null)
 
 export const UserProvider = ({children}) => {
     const storageToken = localStorage.getItem("jwt") || ''
-    const storageUserId = localStorage.getItem("userId") || ''
+    const storageUser = JSON.parse(localStorage.getItem("user")) || ''
     const [tokenJwt, setTokenJwt] = useState(storageToken)
-    const [userId, setUserId] = useState(storageUserId)
-
+    const [user, setUser] = useState(storageUser)
 
     useEffect(()=>{
-        if(tokenJwt?.length && userId?.length){
+        if(tokenJwt?.length && user?.id?.length){
             localStorage.setItem("jwt", tokenJwt)
-            localStorage.setItem("userId", userId)
+            localStorage.setItem("user", JSON.stringify(user))
         }
-    },[tokenJwt, userId])
+    },[tokenJwt, user])
+
     return (
         <UserContext.Provider value={{
-            userId,
-            setUserId,
+            user,
+            setUser,
             tokenJwt,
             setTokenJwt
         }}>

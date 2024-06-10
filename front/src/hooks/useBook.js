@@ -1,9 +1,16 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useUserContext } from "./useUser";
+import { useNavigate } from "react-router-dom";
+import { BookContext } from "../context/BookContext";
 
 export const useBook = () => {
-  const { tokenJwt } = useUserContext();
+  const { tokenJwt, user } = useUserContext();
+  const { books, getAllBooks } = useContext(BookContext)
+  const userBooks = books.filter((book) => book?.userId === user?.id)
 
+
+  const navigate = useNavigate()
+  const {setUser} = useUserContext()
   const [options, setOptions] = useState({
     genres: [],
     actions: [],
@@ -61,6 +68,7 @@ export const useBook = () => {
     formData.append("synopsis", book.synopsis);
     formData.append("image", bookImage);
     const urlPost = "https://s15-02-m-node-react-interbooks.onrender.com/api/books/post"
+    // const urlLocal = 'http://localhost:3001/api/books/post'
     const response = await fetch(
       urlPost,
       {
@@ -73,9 +81,11 @@ export const useBook = () => {
     );
     if (!response.ok) alert("Error al crear el libro");
     const result = await response.json();
-    console.log(result);
+    setUser((prev)=> ({...prev, books: [...prev.books, result.book._id]}))
     alert("Libro creado exitosamente");
+    await getAllBooks()
     formRef.current.reset();
+    navigate('/')
   };
 
   const consultaOptions = async () => {
@@ -95,6 +105,8 @@ export const useBook = () => {
     handleActions,
     handleSubmit,
     handleChange,
-    bookImage
+    bookImage,
+    books,
+    userBooks
   };
 };

@@ -3,12 +3,12 @@ import { useUserContext } from '../hooks/useUser'
 import { useEffect } from 'react'
 
 export const ProtectedRoute = ({children}) => {
-    const { userId } = useUserContext()
+    const { user } = useUserContext()
     const navigate = useNavigate()
     useEffect(() => {
-        if (!userId || userId === null) {
+        if (!user?.id) {
             navigate('/login')
         }
-    },[userId])
+    },[user])
     return children
 }
