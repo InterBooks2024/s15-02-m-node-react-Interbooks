@@ -1,111 +1,68 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { SelectCountry } from "../register/SelectCountry";
 import { useUserContext } from "../../hooks/useUser";
+import { validate } from "../../utils/validate";
 
 export const MyProfile = () => {
-  const {tokenJwt, userId} = useUserContext()
+  const {tokenJwt, user, setUser} = useUserContext()
   
   const BASE_URL = "https://s15-02-m-node-react-interbooks.onrender.com/api";
-  const ENDPOINT = "/user";
+  // const BASE_LOCAL = "http://localhost:3001/api";
+  const ENDPOINT = `/user/edit/${user.id}`;
   const [loading, setLoading] = useState(false);
   const [userCountrySel, setUserCountrySel] = useState('');
   const [errorGenres, setErrorGenres] = useState(false);
-  const [formData, setFormData] = useState({
-    userName: '',
-    email: '',
-    phoneNumber: '',
-    postalCode: ''
-  });
+  const [formData, setFormData] = useState(user);
   const [formErrors, setFormErrors] = useState({});
-  const [selectedGenres, setSelectedGenres] = useState([]);
+  const [selectedGenres, setSelectedGenres] = useState(user?.favoriteGenres);
 
   function onChangeCountry(value) {
     const countryName = value.replace(/^[^\w\s]*/, '').trim();
     setUserCountrySel(countryName);
   }
 
-  useEffect(() => {}, [userCountrySel]);
-  useEffect(() => {
-    // traer info del backend
-    const userData = {
-      userName: "nombreUsuario",
-      email: "usuario@example.com",
-      phoneNumber: "123456789",
-      postalCode: "12345",
-      country: "Argentina",
-      favoriteGenres: ["Fantasía", "Ciencia Ficción"]
-    };
-  
-    setFormData({
-      userName: userData.userName || '',
-      email: userData.email || '',
-      phoneNumber: userData.phoneNumber || '',
-      postalCode: userData.postalCode || '',
-    });
-    
-    setSelectedGenres(userData.favoriteGenres || []);
-  }, []);
-
-  const authRegistro = async (dataUser) => {
+  const editarUsuario = async (dataUser) => {
     const RUTA = `${BASE_URL}${ENDPOINT}`;
     try {
       const config = {
         headers: {
           "Content-Type": "application/json"
-        }
+        },
+        authorization: `Bearer ${tokenJwt}`,
       };
-      const { data } = await axios.post(RUTA, dataUser, config);
-      localStorage.setItem("jwt", data.token);
+      const { data } = await axios.patch(RUTA, dataUser, config);
       setLoading(false);
       return data;
     } catch (error) {
       throw new Error(error.message);
     }
   };
-
-  const validate = () => {
-    const errors = {};
-    if (!formData.userName) {
-      errors.userName = "El nombre es requerido";
-    } else if (formData.userName.length < 2 || formData.userName.length > 30) {
-      errors.userName = "El nombre debe tener entre 2 y 30 caracteres";
-    } else if (!/^[a-zA-Z0-9\s]{2,30}$/.test(formData.userName)) {
-      errors.userName = "El nombre solo debe contener letras y números";
+  const getUserData = async () => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      }
     }
-    if (!formData.email) {
-      errors.email = "Correo es requerido";
-    } else if (!/^[a-zA-Z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/.test(formData.email)) {
-      errors.email = "Correo no válido. Debe ser formato 'ejemplo@mail.com'";
-    }
-    if (!formData.phoneNumber) {
-      errors.phoneNumber = "El teléfono es requerido";
-    } else if (formData.phoneNumber.length < 2 || formData.phoneNumber.length > 12) {
-      errors.phoneNumber = "El teléfono debe tener entre 2 y 12 números";
-    }
-    if (!formData.postalCode) {
-      errors.postalCode = "El Código Postal es requerido";
-    }
-    setFormErrors(errors);
-    return Object.keys(errors).length === 0;
-  };
+    const { data } = await axios(`${BASE_URL}/user/get/${user.id}`, config);
+    setUser(data)
+  }
 
   const onSubmit = async (event) => {
     event.preventDefault();
-    if (!validate()) return;
+    if (!validate(formData, setFormErrors)) return;
 
     const body = {
-      username: formData.userName,
+      username: formData.username,
       favoriteGenres: selectedGenres,
       country: userCountrySel,
       postalCode: formData.postalCode,
       phoneNumber: formData.phoneNumber,
     };
-
     try {
       setLoading(true);
-      const rta = await authRegistro(body);
-      console.log(rta);
+      await editarUsuario(body)
+      await getUserData()
     } catch (error) {
       handleError(error);
     }
@@ -117,12 +74,14 @@ export const MyProfile = () => {
   };
 
   const handleOnChange = (genre) => {
-    if (selectedGenres.includes(genre)) {
-      setSelectedGenres(selectedGenres.filter(item => item !== genre));
-    } else {
+    if (selectedGenres.includes(genre)){
+      const existingGenres = structuredClone(selectedGenres);
+      const newList = existingGenres.filter(item => item !== genre);
+      return setSelectedGenres(newList)
+    }else{
       if (selectedGenres.length < 3) {
         setSelectedGenres([...selectedGenres, genre]);
-      } else {
+      }else{
         setErrorGenres(true);
         setTimeout(() => {
           setErrorGenres(false);
@@ -159,14 +118,14 @@ export const MyProfile = () => {
             className="my-2 py-2 px-4 w-full outline-none border-2 border-zinc-400 rounded-3xl focus:border-cyan-400 text-zinc-600 h-10 placeholder:text-zinc-300"
             id="name"
             type="text"
-            name="userName"
+            name="username"
             placeholder="Escribe tu nombre"
-            value={formData.userName}
+            value={formData.username}
             onChange={handleInputChange}
           />
-          {formErrors.userName && (
+          {formErrors.username && (
             <span className="block absolute -m-2 ml-4 text-red-600 text-xs">
-              {formErrors.userName}
+              {formErrors.username}
             </span>
           )}
 

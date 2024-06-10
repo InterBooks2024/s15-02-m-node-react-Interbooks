@@ -10,6 +10,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 export const Profile = () => {
     const location = useLocation()
     const navigate = useNavigate();
+     
     useEffect(() => {
       const lastSegment = location.pathname.split('/').pop();
       switch (lastSegment) {
