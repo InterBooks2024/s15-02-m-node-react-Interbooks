@@ -24,10 +24,10 @@ function App() {
                   <NewBook/>
                 </ProtectedRoute> 
               }/>
-              <Route path='/profile' element={
-                // <ProtectedRoute>
+              <Route path='/profile/*' element={
+                <ProtectedRoute>
                   <Profile/>
-                // </ProtectedRoute> 
+                </ProtectedRoute> 
               }/>
               <Route path='/login' element={ <LoginView />} />
           </Routes>

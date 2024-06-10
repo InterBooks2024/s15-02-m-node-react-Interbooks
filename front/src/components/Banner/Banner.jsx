@@ -1,9 +1,6 @@
-import { Link } from "react-router-dom";
-
 export const Banner = () => {
   return (
     <section className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 gap-10 mx-auto items-center">
-      <Link to='/new-book' className="text-end rounded-lg bg-interbook-500 text-white font-bold px-5 py-2 w-fit ms-auto">Nuevo libro</Link>
       <article className="flex flex-col">
         <div className="flex flex-row justify-center gap-3">
           <div className="">
