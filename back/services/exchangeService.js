@@ -41,7 +41,7 @@ const createExchangeRequest = async (bookId, userIdFrom) => {
 };
 
 const getAllExchangeRequestUserFromPending = async (userIdFrom) => {
-  const exchangeRequest = await ExchangeModel.find({ userIdFrom: userIdFrom, status: 'pendiente' }).select('userIdTo usernameUserTo actions status createdAt').lean()
+  const exchangeRequest = await ExchangeModel.find({ userIdFrom: userIdFrom, status: 'pendiente' }).select('bookId userIdTo usernameUserTo actions status createdAt').lean()
 
   const verifyUserFrom = await ExchangeModel.find({ userIdFrom: userIdFrom }).select('userIdFrom').lean()
 
@@ -65,7 +65,7 @@ const getAllRequestUserFromNotPending = async (userIdFrom, filters) => {
     }
   }
 
-  const exchangeRequest = await ExchangeModel.find(query).select('userIdTo usernameUserTo actions status createdAt').lean()
+  const exchangeRequest = await ExchangeModel.find(query).select('bookId userIdTo usernameUserTo actions status createdAt').lean()
 
   return exchangeRequest
 };
@@ -128,7 +128,7 @@ const deleteAllExchangeRequestUserFrom = async (userIdFrom) => {
 }
 
 const getAllExchangeRequestUserToPending = async (userIdTo) => {
-  const exchangeRequest = await ExchangeModel.find({ userIdTo: userIdTo, status: 'pendiente' }).select('userIdFrom usernameUserFrom actions status phoneNumberUserFrom createdAt libraryUserFrom').lean()
+  const exchangeRequest = await ExchangeModel.find({ userIdTo: userIdTo, status: 'pendiente' }).select('bookId userIdFrom usernameUserFrom actions status phoneNumberUserFrom createdAt libraryUserFrom').lean()
 
   const verifyUserTo = await ExchangeModel.find({ userIdTo: userIdTo }).select('userIdTo').lean()
 
@@ -152,7 +152,7 @@ const getAllExchangeRequestUserToNotPending = async (userIdTo, filters) => {
     }
   }
 
-  const exchangeRequest = await ExchangeModel.find(query).select('userIdFrom usernameUserFrom actions status createdAt').lean()
+  const exchangeRequest = await ExchangeModel.find(query).select('bookId userIdFrom usernameUserFrom actions status createdAt').lean()
 
   return exchangeRequest
 }
