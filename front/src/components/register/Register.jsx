@@ -1,7 +1,8 @@
 import axios from "axios";
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { useForm } from "react-hook-form";
 import { SelectCountry } from "./SelectCountry";
+import { useNavigate } from "react-router-dom";
 
 export const Register = () => {
     const BASE_URL = "https://s15-02-m-node-react-interbooks.onrender.com/api";
@@ -9,6 +10,7 @@ export const Register = () => {
     const [loading, setLoading] = useState(false)
     const [userCountrySel, setUserCountrySel] = useState('');
     const [errorGenres, setErrorGenres] = useState(false);
+    const navigate = useNavigate()
 
     function onChangeCountry(value){
         const countryName = value.replace(/^[^\w\s]*/, '').trim();
@@ -16,9 +18,6 @@ export const Register = () => {
         // version de pais con Emoji
         // setUserCountrySel(value);
     }
-    useEffect(() => {
-        
-    }, [userCountrySel]);
 
     const {
         register,
@@ -77,11 +76,11 @@ export const Register = () => {
             "postalCode": data.postalCode, //preguntar si es string
             "phoneNumber": data.phoneNumber, //preguntar si es string
         }
-        console.log(body)
         try {
             setLoading(true)
-            const rta = await authRegistro(body)
-        // navigate(rutaInicio)
+            await authRegistro(body)
+            setLoading(false)
+            navigate('/')
         } catch (error) {
             handleError(error)
         }

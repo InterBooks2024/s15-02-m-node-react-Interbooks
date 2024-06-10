@@ -6,16 +6,16 @@ import { useUserContext } from "../../hooks/useUser";
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
-  const {userId, setUserId, setTokenJwt} = useUserContext()
+  const {user, setUser, setTokenJwt} = useUserContext()
 
   const handleLogOut = () => {
     localStorage.removeItem("jwt")
-    localStorage.removeItem("userId")
+    localStorage.removeItem("user")
     setTokenJwt(null)
-    setUserId(null)
+    setUser(null)
     navigate("/")
   }
-  const isLogged = useMemo(()=> userId?.length, [userId])
+  const isLogged = useMemo(()=> user?.id?.length, [user])
   
   return (
     <>
