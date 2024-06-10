@@ -7,7 +7,7 @@ export default {
   theme: {
     extend: {
       colors: {
-        "background": "#f0f8ff",
+        "background": "#f8f8ff",
         "secondary": "#f5f5f5",
         'interbook': {
           '50': '#f1fcfb',
