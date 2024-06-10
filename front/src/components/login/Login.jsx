@@ -8,10 +8,11 @@ import { useUserContext } from "../../hooks/useUser";
 export const Login = () => {
     
     const BASE_URL = "https://s15-02-m-node-react-interbooks.onrender.com/api";
+    // const BASE_LOCAL = "http://localhost:3001/api";
     const LOGIN = "/auth/login";
     const [loading, setLoading] = useState(false)
     const navigate = useNavigate()
-    const {setTokenJwt, setUserId} = useUserContext()
+    const {setTokenJwt, setUser} = useUserContext()
 
     const {
         register,
@@ -30,10 +31,9 @@ export const Login = () => {
               };
             const { data } = await axios.post(RUTA, dataUser, config);
             setTokenJwt(data.Bearer);
-            setUserId(data.userId)
+            setUser(data.user)
             setLoading(false)
             return data
-            
         } catch (error) {
             throw new Error(error.message);
         }
