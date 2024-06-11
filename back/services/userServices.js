@@ -55,7 +55,7 @@ const updateUser = async (id, updateData) => {
 
 const deleteUser = async (id) => {
     try {
-        const user = await User.findByIdAndDelete(id)
+        const user = await User.findOneAndDelete({_id: id})
 
         if (!user) {
             return { error: "User not found" }
