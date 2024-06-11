@@ -5,7 +5,7 @@ import intercambio from '../banner-icons/icons/intercambio.svg'
 import heart from '../banner-icons/icons/heart.svg'
 import { useState } from 'react';
 
-export const Cards = ({ title, synopsis, image, author, category, actions, whishlist=false }) => {
+export const Cards = ({ title, synopsis, image, author, category, actions, whishlist=false, isUser }) => {
 // text-transdorm
 
     function formatString(str) {
@@ -18,7 +18,7 @@ export const Cards = ({ title, synopsis, image, author, category, actions, whish
     const [myWhishlist, setMyWhishlist] = useState(whishlist)
 
   return (
-    <article className="group cursor-pointer rounded-xl shadow-xl hover:shadow-2xl lg:hover:scale-105 duration-300 max-w-80 snap-center min-w-48 md:w-48 w-full relative overflow-hidden h-[350px] border-2 flex flex-col justify-start ">
+    <article className="group cursor-pointer rounded-xl shadow-interbook-900/40 shadow-lg hover:shadow-2xl lg:hover:scale-105 duration-300 max-w-80 snap-center min-w-48 md:w-48 w-full relative overflow-hidden h-[350px] border-2 flex flex-col justify-start ">
       {/* <div className='abosolute top-0 left-0 bg-interbook-100/20 z-20 w-full h-full'>
         <p>{formatString(title)}</p>
         <p className='truncate'>{synopsis}</p>
@@ -32,21 +32,21 @@ export const Cards = ({ title, synopsis, image, author, category, actions, whish
       >
         <div className='absolute top-0 left-0 right-0 bottom-0 bg-center bg-cover w-full h-full z-0 duration-300'
                     style={{backgroundImage: `url(${image})`}}>
-            <img className={`absolute right-4 bottom-4 z-20 hover:scale-110 drop-shadow-lg drop-shadow-white ${myWhishlist ? '' : 'grayscale'}`}
+            {!isUser && <img className={`absolute right-4 bottom-4 z-20 hover:scale-120 drop-shadow-lg drop-shadow-white ${myWhishlist ? '' : 'grayscale'}`}
                   src={heart} alt="Agregar a wishlist" width='32'
                   onClick={() => {setMyWhishlist(!myWhishlist)}}
-            />
+            />}
         </div>
-        <div className="bg-white rounded-xl m-4 py-2 px-4 z-10">
+        <div className="bg-white rounded-xl m-4 py-2 px-4 z-10 shadow-md shadow-interbook-900/50">
           <ul className="flex justify-center space-x-4">
             <li>
-                  <img className={(actions.indexOf("Intercambio"))+1 ? "" : 'grayscale'} src={intercambio} alt="intercambio" />
+                  <img className={(actions.indexOf("Intercambio"))+1 ? "scale-110" : 'grayscale scale-75'} src={intercambio} alt="intercambio" />
             </li>
             <li>
-                  <img className={(actions.indexOf("Regalo"))+1 ? "" : 'grayscale'} src={regalo} alt="regalo" />
+                  <img className={(actions.indexOf("Regalo"))+1 ? "scale-110" : 'grayscale scale-75'} src={regalo} alt="regalo" />
             </li>
             <li>
-                  <img className={(actions.indexOf("Venta"))+1 ? "" : 'grayscale'} src={vende} alt="vende" />
+                  <img className={(actions.indexOf("Venta"))+1 ? "scale-110" : 'grayscale scale-75'} src={vende} alt="vende" />
             </li>
           </ul>
         </div>

@@ -204,7 +204,7 @@ export const MyProfile = () => {
             Enviar Cambios
           </button>
           <p className="text-zinc-400 mt-8 text-sm text-wrap">
-            Al hacer click en Resgistrarse, aceptas las <span className="text-cyan-400 underline cursor-pointer">Condiciones de uso de Interbook</span>, incluídas las <span className="text-cyan-400 underline cursor-pointer">Condiciones de Suscripción</span> y la <span className="text-cyan-400 underline cursor-pointer">Política de Privacidad</span>.
+            Al hacer click en Enviar Cambios, aceptas nuevamente las <span className="text-cyan-400 underline cursor-pointer">Condiciones de uso de Interbook</span>, incluídas las <span className="text-cyan-400 underline cursor-pointer">Condiciones de Suscripción</span> y la <span className="text-cyan-400 underline cursor-pointer">Política de Privacidad</span>.
           </p>
         </form>
       </div>
