@@ -22,7 +22,7 @@ export const ProfileProvider = ({children}) => {
             //   "userId": `${user.id}`
             }
           };
-          const { data } = await axios.put(RUTA, dataUser, config);
+          const { data } = await axios.patch(RUTA, dataUser, config);
           setLoading(false);
           return data;
         } catch (error) {
