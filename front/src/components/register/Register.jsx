@@ -3,6 +3,8 @@ import { useState } from "react"
 import { useForm } from "react-hook-form";
 import { SelectCountry } from "./SelectCountry";
 import { useNavigate } from "react-router-dom";
+import { useBook } from "../../hooks/useBook";
+
 
 export const Register = () => {
     const BASE_URL = "https://s15-02-m-node-react-interbooks.onrender.com/api";
@@ -11,6 +13,7 @@ export const Register = () => {
     const [userCountrySel, setUserCountrySel] = useState('');
     const [errorGenres, setErrorGenres] = useState(false);
     const navigate = useNavigate()
+    const {options} = useBook()
 
     function onChangeCountry(value){
         const countryName = value.replace(/^[^\w\s]*/, '').trim();
@@ -101,15 +104,15 @@ export const Register = () => {
         //     });
     };
     
-    const genres = [
-        "Fantasía",
-        "Ciencia Ficción",
-        "Novela",
-        "Romance",
-        "Terror",
-        "Suspenso",
-        "Biografía"
-    ];
+    // const genres = [cwecwwe
+    //     "Fantasía",
+    //     "Ciencia Ficción",
+    //     "Novela",
+    //     "Romance",
+    //     "Terror",
+    //     "Suspenso",
+    //     "Biografía"
+    // ];
     
     const [selectedGenres, setSelectedGenres] = useState([]);
     
@@ -304,7 +307,7 @@ export const Register = () => {
                 <div>
                 <label className="block font-[600] text-zinc-400" htmlFor="genres">Elige tus géneros favoritos</label>
                     <div className="grid grid-cols-3 mt-4">
-                        {genres.map((genre, index) => (
+                        {options.genres.map((genre, index) => (
                             <div key={index} className="text-sm flex items-center gap-1 text-zinc-400">
                                 <input
                                     type="checkbox"

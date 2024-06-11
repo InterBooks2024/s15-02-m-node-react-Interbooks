@@ -8,31 +8,34 @@ import { BookProvider } from './context/BookContext';
 import { NewBook } from './views/new-book/NewBook';
 import { ProtectedRoute } from './routes/ProtectedRoute';
 import { Profile } from './components/profile/Profile';
+import { ProfileProvider } from './context/ProfileContext';
 
 
 function App() {
   return (
     <UserProvider>
       <BookProvider>
-        <BrowserRouter>
-          <Navbar/>
-          <Routes>
-              <Route path='/' element={<Home/>}/>
-              <Route path='/register' element={ <RegisterView />} />
-              <Route path='/new-book' element={
-                <ProtectedRoute>
-                  <NewBook/>
-                </ProtectedRoute> 
-              }/>
-              <Route path='/profile/*' element={
-                <ProtectedRoute>
-                  <Profile/>
-                </ProtectedRoute> 
-              }/>
-              <Route path='/login' element={ <LoginView />} />
-          </Routes>
-          <Footer/>
-        </BrowserRouter>
+        <ProfileProvider>
+          <BrowserRouter>
+            <Navbar/>
+            <Routes>
+                <Route path='/' element={<Home/>}/>
+                <Route path='/register' element={ <RegisterView />} />
+                <Route path='/new-book' element={
+                  <ProtectedRoute>
+                    <NewBook/>
+                  </ProtectedRoute> 
+                }/>
+                <Route path='/profile/*' element={
+                  <ProtectedRoute>
+                    <Profile/>
+                  </ProtectedRoute> 
+                }/>
+                <Route path='/login' element={ <LoginView />} />
+            </Routes>
+            <Footer/>
+          </BrowserRouter>
+          </ProfileProvider>
       </BookProvider>
     </UserProvider>
   );

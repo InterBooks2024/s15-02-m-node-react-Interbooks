@@ -1,35 +1,64 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import axios from "axios";
+import { createContext } from "react";
+// import { createContext, useContext, useEffect, useState } from "react";
+import { useUserContext } from "../hooks/useUser";
 
 
-export const UserContext = createContext(null)
+export const ProfileContext = createContext(null)
 
-export const UserProvider = ({children}) => {
-    const [userData, setUserData] = useState(null)
-    const [userBooks, setUserBooks] = useState(null)
+export const ProfileProvider = ({children}) => {
+    const {tokenJwt, user} = useUserContext()
+    console.log(user)
+    const BASE_URL = "https://s15-02-m-node-react-interbooks.onrender.com/api";
 
-    const getUserData = async () => {
-        //no se de donde sacar este endpoint ni la info de la api
-        const RUTA = "https://s15-02-m-node-react-interbooks.onrender.com/api/user/books";
+    const editProfile = async (dataUser, setLoading) => {
+        const ENDPOINT = `/user/edit/${user.id}`;
+        const RUTA = `${BASE_URL}${ENDPOINT}`;
         try {
-            const config = {
-                headers: {
-                  "Content-Type": "application/json",
-                  "Authorization": `Bearer ${tokenJwt}`
-                },
-              };
-            const { data } = await axios.get(RUTA, config);
-            setUserData(data)
-            setUserBooks(data.books)
+          const config = {
+            headers: {
+              "Content-Type": "application/json",
+              "authorization": `Bearer ${tokenJwt}`,
+            //   "userId": `${user.id}`
+            }
+          };
+          const { data } = await axios.put(RUTA, dataUser, config);
+          setLoading(false);
+          return data;
         } catch (error) {
-            throw new Error(error.message);
+          throw new Error(error.message);
         }
-    }
+      };
 
-    const value = { userData, userBooks, getUserData };
+    const deleteProfile = async (setLoading) => {
+        if (!user || !user.id) {
+            throw new Error("User ID is not defined");
+        }
+
+        const ENDPOINT = `/user/delete/${user.id}`;
+        // const ENDPOINT = `/user/delete/`;
+        const RUTA = `${BASE_URL}${ENDPOINT}`;
+        try {
+          const config = {
+            headers: {
+              "Content-Type": "application/json",
+              "authorization": `Bearer ${tokenJwt}`,
+            //   "userId": `${user.id}`
+            }
+          };
+          const { data } = await axios.delete(RUTA, config);
+          setLoading(false);
+          return data;
+        } catch (error) {
+          throw new Error(error.message);
+        }
+      };
+
+    const value = { editProfile , deleteProfile };
     
     return (
-        <UserContext.Provider value={ value }>
+        <ProfileContext.Provider value={ value }>
             {children}
-        </UserContext.Provider>
+        </ProfileContext.Provider>
     )
 }
