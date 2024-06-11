@@ -25,7 +25,6 @@ export const ProfileProvider = ({children}) => {
             headers: {
               "Content-Type": "application/json",
               "authorization": `Bearer ${tokenJwt}`,
-            //   "userId": `${user.id}`
             }
           };
           const { data } = await axios.patch(RUTA, dataUser, config);
@@ -48,7 +47,6 @@ export const ProfileProvider = ({children}) => {
             headers: {
               "Content-Type": "application/json",
               "authorization": `Bearer ${tokenJwt}`,
-            //   "userId": `${user.id}`
             }
           };
           const { data } = await axios.delete(RUTA, config);

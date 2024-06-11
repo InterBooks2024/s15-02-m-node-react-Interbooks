@@ -1,14 +1,14 @@
 import { Routes, Route, BrowserRouter } from 'react-router-dom'
 import { UserProvider } from './context/UserContext';
+import { BookProvider } from './context/BookContext';
+import { ProfileProvider } from './context/ProfileContext';
 import { Home } from './views/home/Home';
 import { RegisterView } from './views/register/RegisterView';
 import { LoginView } from './views/login/LoginView';
 import { Footer, Navbar } from './components';
-import { BookProvider } from './context/BookContext';
 import { NewBook } from './views/new-book/NewBook';
 import { ProtectedRoute } from './routes/ProtectedRoute';
 import { Profile } from './components/profile/Profile';
-import { ProfileProvider } from './context/ProfileContext';
 
 
 function App() {
@@ -35,7 +35,7 @@ function App() {
             </Routes>
             <Footer/>
           </BrowserRouter>
-          </ProfileProvider>
+        </ProfileProvider>
       </BookProvider>
     </UserProvider>
   );
