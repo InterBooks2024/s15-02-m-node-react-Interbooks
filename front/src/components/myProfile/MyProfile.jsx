@@ -5,12 +5,13 @@ import { useUserContext } from "../../hooks/useUser";
 import { useProfileContext } from "../../hooks/useProfile";
 import { useBook } from "../../hooks/useBook";
 import { validate } from "./validate";
+import { useNavigate } from "react-router-dom";
 
 export const MyProfile = () => {
   const {user} = useUserContext()
   const {options} = useBook()
   const {editProfile, deleteProfile} = useProfileContext()
-
+  const navigate = useNavigate()
   
   const [loading, setLoading] = useState(false);
   const [loadingDelete, setLoadingDelete] = useState(false);
@@ -61,6 +62,8 @@ export const MyProfile = () => {
       const rta = await deleteProfile(setLoadingDelete);
       console.log(rta);
       alert('Cuenta eliminada con exito');
+      navigate("/")
+
     } catch (error) {
       handleError(error, setLoadingDelete);
     }

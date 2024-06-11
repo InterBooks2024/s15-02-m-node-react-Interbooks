@@ -2,7 +2,6 @@ import axios from "axios";
 import { createContext } from "react";
 // import { createContext, useContext, useEffect, useState } from "react";
 import { useUserContext } from "../hooks/useUser";
-import { useNavigate } from "react-router-dom";
 
 
 export const ProfileContext = createContext(null)
@@ -10,14 +9,12 @@ export const ProfileContext = createContext(null)
 export const ProfileProvider = ({children}) => {
     const {tokenJwt, user, setUser, setTokenJwt} = useUserContext()
     const BASE_URL = "https://s15-02-m-node-react-interbooks.onrender.com/api";
-    const navigate = useNavigate();
 
     const clearUserData = () => {
       localStorage.removeItem("jwt")
       localStorage.removeItem("user")
       setTokenJwt(null)
       setUser(null)
-      navigate("/")
     }
 
     const editProfile = async (dataUser, setLoading) => {
@@ -63,7 +60,7 @@ export const ProfileProvider = ({children}) => {
         }
       };
 
-    const value = { editProfile , deleteProfile };
+    const value = { editProfile , deleteProfile, clearUserData };
     
     return (
         <ProfileContext.Provider value={ value }>
