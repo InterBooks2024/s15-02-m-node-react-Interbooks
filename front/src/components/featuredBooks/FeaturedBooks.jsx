@@ -4,7 +4,7 @@ export const FeaturedBooks = ({books, isUser = false}) => {
     const [parameter, setParameter] = useState('')
     useEffect(() => {
       if (!isUser) {
-        const userId = JSON.parse(localStorage.getItem("user"));
+        const userId = JSON.parse(localStorage.getItem("user")) || '';
         setParameter(userId.id);
       }
     }, []);
