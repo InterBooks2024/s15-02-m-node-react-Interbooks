@@ -17,13 +17,13 @@ export const MyProfile = () => {
   const [userCountrySel, setUserCountrySel] = useState('');
   const [errorGenres, setErrorGenres] = useState(false);
   const [formData, setFormData] = useState({
-    username: '',
-    email: '',
-    phoneNumber: '',
-    postalCode: ''
+    username: user.username || '',
+    email: user.email || '',
+    phoneNumber: user.phoneNumber || '',
+    postalCode: user.postalCode || '',
   });
   const [formErrors, setFormErrors] = useState({});
-  const [selectedGenres, setSelectedGenres] = useState([]);
+  const [selectedGenres, setSelectedGenres] = useState(user.favoriteGenres || []);
 
   function onChangeCountry(value) {
     const countryName = value.replace(/^[^\w\s]*/, '').trim();
@@ -31,16 +31,7 @@ export const MyProfile = () => {
   }
 
   useEffect(() => {}, [userCountrySel]);
-  useEffect(() => {
-    setFormData({
-      username: user.username || '',
-      email: user.email || '',
-      phoneNumber: user.phoneNumber || '',
-      postalCode: user.postalCode || '',
-    });
-    
-    setSelectedGenres(user.favoriteGenres || []);
-  }, []);
+
 
 
   const onSubmit = async (event) => {
