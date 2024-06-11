@@ -1,4 +1,8 @@
-export const entireBook = (setOpenBook, bookData) => {
+import { useBook } from "../../hooks/useBook";
+
+export const EntireBook = (setOpenBook, bookData) => {
+
+    const {books} = useBook()
     // esto iria en home
     // const [openBook, setOpenBook] = useState(false);
     // <div className={`${!openBook && "hidden"
