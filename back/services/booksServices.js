@@ -11,7 +11,7 @@ const addNewBook = async (req) => {
     if(!imgUrl){
         return res.status(500).json({error: "Error uploading image"})
     }
-    const {title, year, author, genre, isbn, actions } = req.body
+    const {title, year, author, genre, isbn, actions, synopsis } = req.body
     
     const newBook = new BookModel({
         title,
@@ -19,6 +19,7 @@ const addNewBook = async (req) => {
         ISBN: isbn || null,
         author,
         genre,
+        synopsis,
         image: imgUrl,
         actions: actions.split(','),
         userId: req.user._id
