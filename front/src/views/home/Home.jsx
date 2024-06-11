@@ -8,7 +8,8 @@ export function Home() {
   return (
     <main className='container p-2 md:p-10 h-full w-full mx-auto'>
         <Banner/>
-        <FeaturedBooks/>
+        <FeaturedBooks books={books}/>
+        {/* <FeaturedBooks /> */}
     </main>
   )
 }
