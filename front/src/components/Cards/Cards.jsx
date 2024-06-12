@@ -33,10 +33,15 @@ export const Cards = ({ title, synopsis, image, author, category, actions, whish
       >
         <div className='absolute top-0 left-0 right-0 bottom-0 bg-center bg-cover w-full h-full z-0 duration-300'
                     style={{backgroundImage: `url(${image})`}}>
-            {!isUser && <img className={`absolute right-4 bottom-4 z-20 hover:scale-120 drop-shadow-lg drop-shadow-white ${myWhishlist ? '' : 'grayscale'}`}
-                  src={heart} alt="Agregar a wishlist" width='32'
-                  onClick={() => {setMyWhishlist(!myWhishlist)}}
-            />}
+            {!isUser && 
+            <div style={{borderRadius: "64% 0% 0% 0% / 64% 10% 10% 0%"}} className='absolute right-0 bottom-0 z-20 bg-background/20 p-3'>
+              <img className={` hover:scale-120 drop-shadow-lg drop-shadow-white ${myWhishlist ? '' : 'grayscale'}`}
+                    src={heart} alt="Agregar a wishlist" width='32'
+                    onClick={() => {setMyWhishlist(!myWhishlist)}}
+              />
+
+            </div>
+            }
         </div>
         <div className="bg-white rounded-xl m-4 py-2 px-4 z-10 shadow-md shadow-interbook-900/50" onClick={() => setOpenBook(data)}>
           <ul className="flex justify-center space-x-4">

@@ -1,7 +1,7 @@
-import {intercambio} from '../banner-icons/icons/intercambio.svg'
-import {regalo} from '../banner-icons/icons/regalo.svg'
-import {vende} from '../banner-icons/icons/vende.svg'
-import {heart} from '../banner-icons/icons/heart.svg'
+import intercambio from '../banner-icons/icons/intercambio.svg'
+import regalo from '../banner-icons/icons/regalo.svg'
+import vende from '../banner-icons/icons/vende.svg'
+import heart from '../banner-icons/icons/heart.svg'
 export const EntireBook = ({setOpenBook, bookData}) => {
     console.log(bookData)
   return (
@@ -11,33 +11,42 @@ export const EntireBook = ({setOpenBook, bookData}) => {
         >
 
         </div>
-            <article className="rounded-xl xl:w-1/2 text-slate-700 bg-background z-40 h-[80dvh] p-6 flex flex-col space-y-4">
-                <div className="flex h-[50dvh]">
-                    <img className="h-full w-1/3 object-cover rounded-lg"
-                        src={bookData.image}
-                        alt={bookData.title}
-                    />
-                    <p>{bookData.user}</p>
-                    <div className="ml-8">
-                        <p className="text-sm text-wrap">Titulo: <span className="text-interbook-800 text-base font-bold">{bookData.title}</span></p>
-                        <p className="text-sm">Autor: <span className="text-interbook-800 text-base font-bold">{bookData.author}</span></p>
-                        <p className="text-sm">Género: <span className="text-interbook-800 text-base font-bold">{bookData.genre}</span></p>
-                        <p className="text-sm">Idioma: <span className="text-interbook-800 text-base font-bold">{bookData.languague}</span></p>
-                        <p className="text-sm">ISBN: <span className="text-interbook-800 text-base font-bold">{bookData.ISBN}</span></p>
-                        <div className="bg-interbook-400 text-white font-bold px-4 py-2 rounded-full cursor-pointer focus:outline-none focus:ring-2 hover:bg-interbook-500">Intercambiar</div><img src={intercambio} alt="Intercambiar" />
-                        <div className="bg-interbook-400 text-white font-bold px-4 py-2 rounded-full cursor-pointer focus:outline-none focus:ring-2 hover:bg-interbook-500">Pedir Regalo</div><img src={regalo} alt="Pedir" />
-                        <div className="bg-interbook-400 text-white font-bold px-4 py-2 rounded-full cursor-pointer focus:outline-none focus:ring-2 hover:bg-interbook-500">Comprar</div><img src={vende} alt="Comprar" />
-                        <div className="bg-interbook-400 text-white font-bold px-4 py-2 rounded-full cursor-pointer focus:outline-none focus:ring-2 hover:bg-interbook-500">Añadir a mi WishList</div><img src={heart} alt="Añadir" />
+            <article className="rounded-xl xl:w-1/2 text-slate-700 bg-background z-40 h-[80dvh] p-6 flex flex-col">
+                <div className="flex gap-8 2xl:gap-16 h-[50dvh]">
+                    <div className='w-1/3 flex flex-col items-center'>
+
+                        <img className="object-cover rounded-lg"
+                            src={bookData.image}
+                            alt={bookData.title}
+                        />
+                        <div className='flex gap-2 2xl:gap-4 items-center justify-center cursor-pointer group'>
+                            <div className="h-auto bg-background text-interbook-500 font-bold py-2 group-hover:underline transition-all duration-300">
+                                Añadir a mi WishList
+                            </div>
+                            <img className='w-8' src={heart} alt="Añadir" />
+
+                        </div>
+                    </div>
+                    <div className='w-2/3'>
+                        <div className="ml-8">
+                            <p>{bookData.user}</p>
+                            <p className="text-sm text-wrap 2xl:text-xl">Titulo: <span className="text-interbook-800 text-base 2xl:text-3xl font-bold">{bookData.title}</span></p>
+                            <p className="text-sm 2xl:text-xl">Autor: <span className="text-interbook-800 text-base 2xl:text-3xl font-bold">{bookData.author}</span></p>
+                            <p className="text-sm 2xl:text-xl">Género: <span className="text-interbook-800 text-base 2xl:text-3xl font-bold">{bookData.genre}</span></p>
+                            <p className="text-sm 2xl:text-xl">Idioma: <span className="text-interbook-800 text-base 2xl:text-3xl font-bold">{bookData.languague}</span></p>
+                            <p className="text-sm 2xl:text-xl">ISBN: <span className="text-interbook-800 text-base 2xl:text-3xl font-bold">{bookData.ISBN}</span></p>
+                        </div>
+                        <div className='ml-8 mt-4 space-y-2'>
+                            {bookData.actions.indexOf("Intercambio") != -1 && <div className='flex gap-2'><img className='w-10' src={intercambio} alt="Intercambiar" /><div className="w-44 bg-interbook-400 text-white font-bold px-4 py-1 rounded-full cursor-pointer focus:outline-none focus:ring-2 hover:bg-interbook-500 flex items-center justify-center">Intercambiar</div></div>}
+                            {bookData.actions.indexOf("Regalo") != -1 && <div className='flex gap-2'><img className='w-10' src={regalo} alt="Pedir" /><div className="w-44 bg-interbook-400 text-white font-bold px-4 py-1 rounded-full cursor-pointer focus:outline-none focus:ring-2 hover:bg-interbook-500 flex items-center justify-center">Pedir Regalo</div></div>}
+                            {bookData.actions.indexOf("Venta") != -1 && <div className='flex gap-2'><img className='w-10' src={vende} alt="Comprar" /><div className="w-44 bg-interbook-400 text-white font-bold px-4 py-1 rounded-full cursor-pointer focus:outline-none focus:ring-2 hover:bg-interbook-500 flex items-center justify-center">Comprar</div></div>}
+                        </div>
                     </div>
                 </div>
                 <div>
-                    <p className="text-semibold">Sinopsis:</p>
-                    <p className="line-clamp-5">{bookData.synopsis}</p>
+                    <p className="text-sm 2xl:text-xl">Sinopsis:</p>
+                    <p className="line-clamp-5 2xl:text-3xl">{bookData.synopsis}</p>
                 </div>
-                <footer>
-                    {/* botones */}
-                </footer>
-
             </article>
     </div>
   )
