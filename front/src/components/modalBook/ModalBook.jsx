@@ -1,12 +1,27 @@
 import {vende, intercambio, heart, regalo} from '../'
 import { useNavigate } from 'react-router-dom'
+import { useExchange } from '../../hooks/useExchange'
+import { useState } from 'react'
+import { useUserContext } from '../../hooks/useUser'
 
 export const ModalBook = ({setOpenBook, bookData}) => {
     const navigate = useNavigate()
-    
-    const handleOnClick = (book, action) => {
+    const {generateExchange} = useExchange()
+    const [isLoading, setIsLoading] = useState(false)
+    const { user } = useUserContext()
+
+    const handleOnClick = async (book, action) => {
+        if(isLoading){ return }
+        if(!user){
+            navigate('/login')
+            return
+        }
         // llamar a api de exchange y enviar a mis intercambios
-        console.log(book, action)
+        console.log(book._id, action)
+        const exchange = await generateExchange(book._id, action, setIsLoading)
+        console.log(exchange)
+        if (exchange) {setOpenBook('')}
+        navigate('/profile/myexchanges')
 
     }
 
@@ -55,23 +70,35 @@ export const ModalBook = ({setOpenBook, bookData}) => {
                             <p className="text-sm 2xl:text-xl">ISBN: <span className="text-interbook-800 text-base 2xl:text-3xl font-bold">{bookData.ISBN}</span></p>
                         </div>
                         <div className='ml-8 mt-4 space-y-2'>
-                            {bookData.actions.indexOf("Intercambio") != -1 && <div className='flex gap-2'><img className='w-10' src={intercambio} alt="Intercambiar" /><div className="w-44 bg-interbook-400 text-white font-bold px-4 py-1 rounded-full cursor-pointer focus:outline-none focus:ring-2 hover:bg-interbook-500 flex items-center justify-center">Intercambiar</div></div>}
+                            {bookData.actions.indexOf("Intercambio") != -1 && 
+                                <div className='flex gap-2'
+                                    onClick={() => handleOnClick(bookData, 'Intercambio', isLoading)}
+                                >
+                                    <img className='w-10' src={intercambio} alt="Intercambiar" />
+                                    <div className="w-44 bg-interbook-400 text-white font-bold px-4 py-1 rounded-full cursor-pointer focus:outline-none focus:ring-2 hover:bg-interbook-500 flex items-center justify-center">
+                                        Intercambiar
+                                    </div>
+                                </div>}
                             {bookData.actions.indexOf("Regalo") != -1 &&
                                 <div className='flex gap-2'
-                                    onClick={() => handleOnClick(bookData, 'Regalo')}
+                                    onClick={() => handleOnClick(bookData, 'Regalo', isLoading)}
                                 >
-                                    <img className='w-10' src={regalo} alt="Pedir" /><div className="w-44 bg-interbook-400 text-white font-bold px-4 py-1 rounded-full cursor-pointer focus:outline-none focus:ring-2 hover:bg-interbook-500 flex items-center justify-center gap-3">Pedir Regalo 
+                                    <img className='w-10' src={regalo} alt="Pedir" />
+                                    <div className="w-44 bg-interbook-400 text-white font-bold px-4 py-1 rounded-full cursor-pointer focus:outline-none focus:ring-2 hover:bg-interbook-500 flex items-center justify-center gap-3">
+                                        Pedir Regalo 
                                         {/* <img className='w-6' src={whatsapp} alt="" /> */}
                                     </div>
                                 </div>
                             }
                             {bookData.actions.indexOf("Venta") != -1 &&
                                 <div className='flex gap-2'
-                                    onClick={() => handleOnClick(bookData, 'Venta')}
+                                    onClick={() => handleOnClick(bookData, 'Venta', isLoading)}
                                 >
-                                    <img className='w-10' src={vende} alt="Comprar" /><div className="w-44 bg-interbook-400 text-white font-bold px-4 py-1 rounded-full cursor-pointer focus:outline-none focus:ring-2 hover:bg-interbook-500 flex items-center justify-center gap-3">Comprar
+                                    <img className='w-10' src={vende} alt="Comprar" />
+                                    <div className="w-44 bg-interbook-400 text-white font-bold px-4 py-1 rounded-full cursor-pointer focus:outline-none focus:ring-2 hover:bg-interbook-500 flex items-center justify-center gap-3">
+                                        Comprar
                                         {/* <img className='w-6' src={whatsapp} alt="" /> */}
-                                        </div>
+                                    </div>
                                 </div>}
                         </div>
                     </div>
