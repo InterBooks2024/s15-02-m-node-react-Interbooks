@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
 import { Cards } from "../Cards/Cards";
+import { EntireBook } from "../entireBook/EntireBook";
 export const FeaturedBooks = ({books, isUser = false}) => {
     const [parameter, setParameter] = useState('')
+    const [openBook, setOpenBook] = useState('');
+
     useEffect(() => {
       if (!isUser) {
         const userId = JSON.parse(localStorage.getItem("user")) || '';
@@ -22,12 +25,15 @@ export const FeaturedBooks = ({books, isUser = false}) => {
               category={book.category}
               actions={book.actions}
               isUser={isUser}
+              data={book}
+              setOpenBook = {setOpenBook}
             />
 
           ))
           } 
         
       </article>
+      {openBook !== '' && <EntireBook bookData={openBook} setOpenBook={setOpenBook} />}
     </section>
   );
 };
