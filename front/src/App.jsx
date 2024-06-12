@@ -9,6 +9,7 @@ import { Footer, Navbar } from './components';
 import { NewBook } from './views/new-book/NewBook';
 import { ProtectedRoute } from './routes/ProtectedRoute';
 import { Profile } from './components/profile/Profile';
+import { ExchangesProvider } from './context/ExchangesContext';
 
 
 function App() {
@@ -16,25 +17,27 @@ function App() {
     <UserProvider>
       <BookProvider>
         <ProfileProvider>
-          <BrowserRouter>
-            <Navbar/>
-            <Routes>
-                <Route path='/' element={<Home/>}/>
-                <Route path='/register' element={ <RegisterView />} />
-                <Route path='/new-book' element={
-                  <ProtectedRoute>
-                    <NewBook/>
-                  </ProtectedRoute> 
-                }/>
-                <Route path='/profile/*' element={
-                  <ProtectedRoute>
-                    <Profile/>
-                  </ProtectedRoute> 
-                }/>
-                <Route path='/login' element={ <LoginView />} />
-            </Routes>
-            <Footer/>
-          </BrowserRouter>
+          <ExchangesProvider>
+            <BrowserRouter>
+              <Navbar/>
+              <Routes>
+                  <Route path='/' element={<Home/>}/>
+                  <Route path='/register' element={ <RegisterView />} />
+                  <Route path='/new-book' element={
+                    <ProtectedRoute>
+                      <NewBook/>
+                    </ProtectedRoute> 
+                  }/>
+                  <Route path='/profile/*' element={
+                    <ProtectedRoute>
+                      <Profile/>
+                    </ProtectedRoute> 
+                  }/>
+                  <Route path='/login' element={ <LoginView />} />
+              </Routes>
+              <Footer/>
+            </BrowserRouter>
+          </ExchangesProvider>
         </ProfileProvider>
       </BookProvider>
     </UserProvider>

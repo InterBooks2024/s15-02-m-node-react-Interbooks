@@ -1,8 +1,4 @@
-// import arrow from "../../assets/arrow.svg";
-import regalo from '../banner-icons/icons/regalo.svg'
-import vende from '../banner-icons/icons/vende.svg'
-import intercambio from '../banner-icons/icons/intercambio.svg'
-import heart from '../banner-icons/icons/heart.svg'
+import {vende, intercambio, heart, regalo} from '../'
 import { useState } from 'react';
 
 export const Cards = ({ title, synopsis, image, author, category, actions, whishlist=false, isUser , data, setOpenBook}) => {

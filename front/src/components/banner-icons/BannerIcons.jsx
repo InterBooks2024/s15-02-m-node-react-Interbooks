@@ -1,6 +1,4 @@
-import regalo from './icons/regalo.svg'
-import intercambio from './icons/intercambio.svg'
-import vende from './icons/vende.svg'
+import {vende, intercambio, regalo} from '../'
 import { Icon } from './Icon'
 
 export const BannerIcons = () => {
