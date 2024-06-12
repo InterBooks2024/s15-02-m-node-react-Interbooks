@@ -1,5 +1,5 @@
 
-export const sendMessage = ({book, action}) => {
+export const linkWhatsapp = ({book, action}) => {
     const user = JSON.parse(localStorage.getItem("user")) || '';
     
     const message = `Hola! Soy ${user.username}.
@@ -11,7 +11,6 @@ ${action == 'Regalo' ? `Si te querés comunicar conmigo lo podés hacer a este n
 
 Muchas gracias!
 `
-// const link = `http://wa.me/+549${book.user.phoneNumber}?text=${encodeURI(message)}`
-    const link = `http://wa.me/+5493412667096?text=${encodeURI(message)}`
+const link = `http://wa.me/${book.user.phoneNumber}?text=${encodeURI(message)}`
     return link
 }

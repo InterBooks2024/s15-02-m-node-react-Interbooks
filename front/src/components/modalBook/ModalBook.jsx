@@ -1,25 +1,27 @@
-import intercambio from '../banner-icons/icons/intercambio.svg'
-import regalo from '../banner-icons/icons/regalo.svg'
-import vende from '../banner-icons/icons/vende.svg'
-import heart from '../banner-icons/icons/heart.svg'
-import whatsapp from './whatsapp.svg'
-import { sendMessage } from './helper.js'
+import {vende, intercambio, heart, regalo} from '../'
 import { useNavigate } from 'react-router-dom'
 
 export const ModalBook = ({setOpenBook, bookData}) => {
     const navigate = useNavigate()
     
     const handleOnClick = (book, action) => {
-        const user = JSON.parse(localStorage.getItem("user")) || '';
-        if (!user?.id) {
-            navigate('/login')
-            return
-            } else {
-                const link = sendMessage({book , action})
-                window.open(link)
-                }
+        // llamar a api de exchange y enviar a mis intercambios
+        console.log(book, action)
+
     }
-                console.log(bookData)
+
+    // MANDA DIRECTAMENTE AL WHATSAPP
+    // const handleOnClick = (book, action) => {
+    //     const user = JSON.parse(localStorage.getItem("user")) || '';
+    //     if (!user?.id) {
+    //         navigate('/login')
+    //         return
+    //         } else {
+    //             const link = sendMessage({book , action})
+    //             window.open(link)
+    //             }
+    // }
+    //             console.log(bookData)
   return (
     <div className="min-h-screen w-full fixed top-0 left-0 right-0 flex justify-center items-center">  
         <div className='absolute bg-cover bg-interbook-900/40 min-h-screen w-full top-0 left-0 right-0 backdrop-blur-sm'
@@ -58,14 +60,18 @@ export const ModalBook = ({setOpenBook, bookData}) => {
                                 <div className='flex gap-2'
                                     onClick={() => handleOnClick(bookData, 'Regalo')}
                                 >
-                                    <img className='w-10' src={regalo} alt="Pedir" /><div className="w-44 bg-interbook-400 text-white font-bold px-4 py-1 rounded-full cursor-pointer focus:outline-none focus:ring-2 hover:bg-interbook-500 flex items-center justify-center gap-3">Pedir Regalo <img className='w-6' src={whatsapp} alt="" /></div>
+                                    <img className='w-10' src={regalo} alt="Pedir" /><div className="w-44 bg-interbook-400 text-white font-bold px-4 py-1 rounded-full cursor-pointer focus:outline-none focus:ring-2 hover:bg-interbook-500 flex items-center justify-center gap-3">Pedir Regalo 
+                                        {/* <img className='w-6' src={whatsapp} alt="" /> */}
+                                    </div>
                                 </div>
                             }
                             {bookData.actions.indexOf("Venta") != -1 &&
                                 <div className='flex gap-2'
                                     onClick={() => handleOnClick(bookData, 'Venta')}
                                 >
-                                    <img className='w-10' src={vende} alt="Comprar" /><div className="w-44 bg-interbook-400 text-white font-bold px-4 py-1 rounded-full cursor-pointer focus:outline-none focus:ring-2 hover:bg-interbook-500 flex items-center justify-center gap-3">Comprar <img className='w-6' src={whatsapp} alt="" /></div>
+                                    <img className='w-10' src={vende} alt="Comprar" /><div className="w-44 bg-interbook-400 text-white font-bold px-4 py-1 rounded-full cursor-pointer focus:outline-none focus:ring-2 hover:bg-interbook-500 flex items-center justify-center gap-3">Comprar
+                                        {/* <img className='w-6' src={whatsapp} alt="" /> */}
+                                        </div>
                                 </div>}
                         </div>
                     </div>
