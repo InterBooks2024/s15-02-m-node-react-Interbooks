@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { Cards } from "../Cards/Cards";
-import { EntireBook } from "../entireBook/EntireBook";
+import { EntireBook ,Cards } from "../";
+
 export const FeaturedBooks = ({books, isUser = false}) => {
     const [parameter, setParameter] = useState('')
     const [openBook, setOpenBook] = useState('');
