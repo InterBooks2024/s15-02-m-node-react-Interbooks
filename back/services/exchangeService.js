@@ -25,7 +25,7 @@ const createExchangeRequest = async (bookId, userIdFrom, actions) => {
     return { error: 'The user cannot exchange, give or sell their book to themselves' }
   }
 
-  if (actions != ['Intercambio', 'Venta', 'Regalo']) {
+  if (['Intercambio', 'Venta', 'Regalo'].includes(actions) == false) {
     return { error: 'Invalid actions' }
   }
 
