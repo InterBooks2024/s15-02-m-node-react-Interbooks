@@ -8,18 +8,18 @@ import { useNavigate } from 'react-router-dom'
 
 export const ModalBook = ({setOpenBook, bookData}) => {
     const navigate = useNavigate()
-    console.log(bookData)
     
     const handleOnClick = (book, action) => {
         const user = JSON.parse(localStorage.getItem("user")) || '';
         if (!user?.id) {
             navigate('/login')
             return
-        } else {
-            const link = sendMessage({book , action})
-            window.open(link)
-        }
+            } else {
+                const link = sendMessage({book , action})
+                window.open(link)
+                }
     }
+                console.log(bookData)
   return (
     <div className="min-h-screen w-full fixed top-0 left-0 right-0 flex justify-center items-center">  
         <div className='absolute bg-cover bg-interbook-900/40 min-h-screen w-full top-0 left-0 right-0 backdrop-blur-sm'
