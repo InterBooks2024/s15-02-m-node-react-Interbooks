@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { EntireBook ,Cards } from "../";
+import { ModalBook, Cards } from "../";
 
 export const FeaturedBooks = ({books, isUser = false}) => {
     const [parameter, setParameter] = useState('')
@@ -31,9 +31,8 @@ export const FeaturedBooks = ({books, isUser = false}) => {
 
           ))
           } 
-        
       </article>
-      {openBook !== '' && <EntireBook bookData={openBook} setOpenBook={setOpenBook} />}
+      {openBook !== '' && <ModalBook bookData={openBook} setOpenBook={setOpenBook}/>}
     </section>
   );
 };
