@@ -3,10 +3,10 @@ import regalo from '../banner-icons/icons/regalo.svg'
 import vende from '../banner-icons/icons/vende.svg'
 import heart from '../banner-icons/icons/heart.svg'
 import whatsapp from './whatsapp.svg'
-import {sendMessage} from './helper.js'
+import { sendMessage } from './helper.js'
 import { useNavigate } from 'react-router-dom'
 
-export const EntireBook = ({setOpenBook, bookData}) => {
+export const ModalBook = ({setOpenBook, bookData}) => {
     const navigate = useNavigate()
     console.log(bookData)
     

@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
-import { Cards } from "../Cards/Cards";
+import { ModalBook, Cards } from "../";
+
 export const FeaturedBooks = ({books, isUser = false}) => {
     const [parameter, setParameter] = useState('')
+    const [openBook, setOpenBook] = useState('');
+
     useEffect(() => {
       if (!isUser) {
         const userId = JSON.parse(localStorage.getItem("user")) || '';
@@ -22,12 +25,14 @@ export const FeaturedBooks = ({books, isUser = false}) => {
               category={book.category}
               actions={book.actions}
               isUser={isUser}
+              data={book}
+              setOpenBook = {setOpenBook}
             />
 
           ))
           } 
-        
       </article>
+      {openBook !== '' && <ModalBook bookData={openBook} setOpenBook={setOpenBook}/>}
     </section>
   );
 };

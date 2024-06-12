@@ -5,7 +5,7 @@ import intercambio from '../banner-icons/icons/intercambio.svg'
 import heart from '../banner-icons/icons/heart.svg'
 import { useState } from 'react';
 
-export const Cards = ({ title, synopsis, image, author, category, actions, whishlist=false, isUser }) => {
+export const Cards = ({ title, synopsis, image, author, category, actions, whishlist=false, isUser , data, setOpenBook}) => {
 // text-transdorm
 
     function formatString(str) {
@@ -24,20 +24,26 @@ export const Cards = ({ title, synopsis, image, author, category, actions, whish
         <p className='truncate'>{synopsis}</p>
       </div> */}
       <div className="flex flex-col justify-between h-full duration-300 relative"
-                  style={{
-                    WebkitBackdropFilter: 'blur(10px) saturate(180%)',
-                    backdropFilter: 'blur(10px) saturate(180%)',
-                    backgroundColor: '#f1fcfb23',
-                    }}
+            style={{
+              WebkitBackdropFilter: 'blur(10px) saturate(180%)',
+              backdropFilter: 'blur(10px) saturate(180%)',
+              backgroundColor: '#f1fcfb23',
+              }}
+            onClick={() => setOpenBook(data)}
       >
         <div className='absolute top-0 left-0 right-0 bottom-0 bg-center bg-cover w-full h-full z-0 duration-300'
                     style={{backgroundImage: `url(${image})`}}>
-            {!isUser && <img className={`absolute right-4 bottom-4 z-20 hover:scale-120 drop-shadow-lg drop-shadow-white ${myWhishlist ? '' : 'grayscale'}`}
-                  src={heart} alt="Agregar a wishlist" width='32'
-                  onClick={() => {setMyWhishlist(!myWhishlist)}}
-            />}
+            {!isUser && 
+            <div style={{borderRadius: "64% 0% 0% 0% / 64% 10% 10% 0%"}} className='absolute right-0 bottom-0 z-20 bg-background/30 p-3 pb-2 pr-2'>
+              <img className={` hover:scale-120 drop-shadow-lg drop-shadow-white ${myWhishlist ? '' : 'grayscale'}`}
+                    src={heart} alt="Agregar a wishlist" width='32'
+                    onClick={() => {setMyWhishlist(!myWhishlist)}}
+              />
+
+            </div>
+            }
         </div>
-        <div className="bg-white rounded-xl m-4 py-2 px-4 z-10 shadow-md shadow-interbook-900/50">
+        <div className="bg-white rounded-xl m-4 py-2 px-4 z-10 shadow-md shadow-interbook-900/50" onClick={() => setOpenBook(data)}>
           <ul className="flex justify-center space-x-4">
             <li>
                   <img className={(actions.indexOf("Intercambio"))+1 ? "scale-110" : 'grayscale scale-75'} src={intercambio} alt="intercambio" />
@@ -51,7 +57,7 @@ export const Cards = ({ title, synopsis, image, author, category, actions, whish
           </ul>
         </div>
       </div>
-      <div className="flex flex-col justify-center p-2">
+      <div className="flex flex-col justify-center p-2" onClick={() => setOpenBook(data)}>
         <h3 className="font-bold tracking-tight text-interbook-600">
           {formatString(title)}
         </h3>
