@@ -156,8 +156,9 @@ const requestExchange = async (req, res) => {
   try {
     const bookId = req.params.bookId
     const userIdFrom = req.user.id
+    const actions = req.body.actions
 
-    const exchangeRequest = await exchangeService.createExchangeRequest(bookId, userIdFrom)
+    const exchangeRequest = await exchangeService.createExchangeRequest(bookId, userIdFrom, actions)
 
     if (exchangeRequest.error == "Book not found") {
       return res.status(404).json(exchangeRequest)
@@ -168,6 +169,10 @@ const requestExchange = async (req, res) => {
     }
 
     if (exchangeRequest.error == "The user cannot exchange, give or sell their book to themselves") {
+      return res.status(400).json(exchangeRequest)
+    }
+
+    if (exchangeRequest.error == "Invalid actions") {
       return res.status(400).json(exchangeRequest)
     }
 

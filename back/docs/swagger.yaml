@@ -381,7 +381,7 @@ paths:
         "404":
           description: Book not found or User Not Found
         "400":
-          description: The user cannot exchange, give or sell their book to themselves
+          description: The user cannot exchange, give or sell their book to themselves or Invalid actions
         "500":
           description: Error exchanging book
   /api/exchange/{exchangeId}/accept:

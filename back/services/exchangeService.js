@@ -4,7 +4,7 @@ const UserModel = require('../models/User.js');
 const { isValidObjectId } = require("mongoose")
 
 // Jose 66585c44fb1c4bb8322adb3b -  Agatha 66586293889b4ca664d545b9
-const createExchangeRequest = async (bookId, userIdFrom) => {
+const createExchangeRequest = async (bookId, userIdFrom, actions) => {
   if (isValidObjectId(bookId) == false) {
     return { error: 'Book not found' }
   }
@@ -25,6 +25,10 @@ const createExchangeRequest = async (bookId, userIdFrom) => {
     return { error: 'The user cannot exchange, give or sell their book to themselves' }
   }
 
+  if (actions != ['Intercambio', 'Venta', 'Regalo']) {
+    return { error: 'Invalid actions' }
+  }
+
   // Añadir nombre del Usuario que creo la solicitud
   const exchangeRequest = new ExchangeModel({
     bookId,
@@ -33,7 +37,8 @@ const createExchangeRequest = async (bookId, userIdFrom) => {
     userIdTo,
     usernameUserTo: userIdTo.username,
     libraryUserFrom: UserIdFrom.books,
-    phoneNumberUserFrom: UserIdFrom.phoneNumber
+    phoneNumberUserFrom: UserIdFrom.phoneNumber,
+    actions: actions,
   });
 
   await exchangeRequest.save()

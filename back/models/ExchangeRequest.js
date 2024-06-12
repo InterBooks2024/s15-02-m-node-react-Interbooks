@@ -11,7 +11,7 @@ const exchangesSchema = new mongoose.Schema({
     bookOfferedId: { type: mongoose.Schema.Types.ObjectId, ref: 'Book', default: null },
     status: {
         type: String,
-        enum: ['pendiente', 'aceptada', 'rechazada', 'cancelada'],
+        enum: ['pendiente', 'aceptada', 'rechazada'],
         default: 'pendiente'
     },
     actions: [{
