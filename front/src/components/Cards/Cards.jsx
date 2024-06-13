@@ -14,7 +14,7 @@ export const Cards = ({ title, synopsis, image, author, category, actions, whish
     const [myWhishlist, setMyWhishlist] = useState(whishlist)
 
   return (
-    <article className="group cursor-pointer rounded-xl shadow-interbook-900/40 shadow-lg hover:shadow-2xl lg:hover:scale-105 duration-300 max-w-80 snap-center min-w-48 md:w-48 w-full relative overflow-hidden h-[350px] border-2 flex flex-col justify-start ">
+    <article className="group cursor-pointer rounded-xl shadow-interbook-900/40 shadow-lg hover:shadow-2xl lg:hover:scale-105 duration-300 max-w-80 snap-center w-full md:w-48 relative overflow-hidden h-[350px] border-2 flex flex-col justify-start ">
       {/* <div className='abosolute top-0 left-0 bg-interbook-100/20 z-20 w-full h-full'>
         <p>{formatString(title)}</p>
         <p className='truncate'>{synopsis}</p>

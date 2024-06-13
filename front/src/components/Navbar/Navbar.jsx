@@ -20,12 +20,7 @@ export function Navbar() {
   return (
     <>
     <div className="espacio-solido w-full h-20"></div>  
-    <nav className="w-full h-20 fixed top-0 left-0 right-0 z-50 bg-transparent"
-          style={{
-            WebkitBackdropFilter: 'blur(10px) saturate(180%)',
-            backdropFilter: 'blur(10px) saturate(180%)',
-            backgroundColor: '#f1fcfb95',
-          }}
+    <nav className="w-full h-20 fixed top-0 left-0 right-0 z-[55] bg-[#f1f9fc]/90 backdrop-blur-sm"
       >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">

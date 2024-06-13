@@ -12,8 +12,9 @@ export const FeaturedBooks = ({books, isUser = false}) => {
       }
     }, []);
    return (
-    <section className="space-y-10 bg-bg-200 rounded-md mx-auto w-full mt-10">
-      <article className="text-sm grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-10 mx-auto">
+    // grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-10 mx-auto 
+    <section className="space-y-10 bg-bg-200 rounded-md mx-auto mt-10 min-w-full">
+      <article className="text-sm flex flex-wrap justify-center md:justify-start gap-10 mx-auto items-center">
         {books.map((book) => (
           parameter !== book.userId &&
             <Cards
