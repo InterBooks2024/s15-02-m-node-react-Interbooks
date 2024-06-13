@@ -42,7 +42,7 @@ export const Profile = () => {
     const tabSeleccionada = "bg-interbook-400 text-white font-bold border-2 rounded-t-lg"
     const tabNoSeleccionada = "bg-transparent cursor-base text-slate-400 hover:border-slate-900 dark:hover:border-slate-300  cursor-pointer"
   return (
-    <section className='lg:w-[1024px] mx-auto overflow-hidden'>
+    <section className='lg:w-[1024px] mx-auto overflow-hidden min-h-[70dvh]'>
       <div className="header-tabs flex overflow-x-auto whitespace-nowrap justify-center mx-auto select-none lg:w-[1024px] border-b-2 border-interbook-400">
         <div
           onClick={() => handleTabClick('1', 'mylibrary')}

@@ -31,55 +31,30 @@ export const ExchangesProvider = ({children}) => {
           throw new Error(error.message)
         }
     }
-    // const clearUserData = () => {
-    //   localStorage.removeItem("jwt")
-    //   localStorage.removeItem("user")
-    //   setTokenJwt(null)
-    //   setUser(null)
-    // }
+    const getExchangeSent = async () => {
+        const ENDPOINT = `/exchanges/sent/`
+        const RUTA = `${BASE_URL}${ENDPOINT}`
 
-    // const editProfile = async (dataUser, setLoading) => {
-    //     const ENDPOINT = `/user/edit/${user.id}`;
-    //     const RUTA = `${BASE_URL}${ENDPOINT}`;
-    //     try {
-    //       const config = {
-    //         headers: {
-    //           "Content-Type": "application/json",
-    //           "authorization": `Bearer ${tokenJwt}`,
-    //         }
-    //       };
-    //       const { data } = await axios.patch(RUTA, dataUser, config);
-    //       setLoading(false);
-    //       return data;
-    //     } catch (error) {
-    //       throw new Error(error.message);
-    //     }
-    //   };
+        try {
+          const { data } = await axios.get(RUTA, config)
+          return data
+        } catch (error) {
+          throw new Error(error.message)
+        }
+    }
+    const getExchangeReceived = async () => {
+        const ENDPOINT = `/exchanges/received/`
+        const RUTA = `${BASE_URL}${ENDPOINT}`
 
-    // const deleteProfile = async (setLoading) => {
-    //     if (!user || !user.id) {
-    //         throw new Error("User ID is not defined");
-    //     }
+        try {
+          const { data } = await axios.get(RUTA, config)
+          return data
+        } catch (error) {
+          throw new Error(error.message)
+        }
+    }
 
-    //     const ENDPOINT = `/user/delete/${user.id}`;
-    //     const RUTA = `${BASE_URL}${ENDPOINT}`;
-    //     try {
-    //       const config = {
-    //         headers: {
-    //           "Content-Type": "application/json",
-    //           "authorization": `Bearer ${tokenJwt}`,
-    //         }
-    //       };
-    //       const { data } = await axios.delete(RUTA, config);
-    //       setLoading(false);
-    //       clearUserData();
-    //       return data;
-    //     } catch (error) {
-    //       throw new Error(error.message);
-    //     }
-    //   };
-
-    const value = { generateExchange };
+    const value = { generateExchange, getExchangeSent , getExchangeReceived };
     
     return (
         <ExchangesContext.Provider value={ value }>

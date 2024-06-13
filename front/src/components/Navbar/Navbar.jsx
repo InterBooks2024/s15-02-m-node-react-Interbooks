@@ -24,7 +24,7 @@ export function Navbar() {
           style={{
             WebkitBackdropFilter: 'blur(10px) saturate(180%)',
             backdropFilter: 'blur(10px) saturate(180%)',
-            backgroundColor: '#f1fcfb23',
+            backgroundColor: '#f1fcfb95',
           }}
       >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

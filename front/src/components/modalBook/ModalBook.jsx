@@ -72,7 +72,7 @@ export const ModalBook = ({setOpenBook, bookData}) => {
                         <div className='ml-8 mt-4 space-y-2'>
                             {bookData.actions.indexOf("Intercambio") != -1 && 
                                 <div className='flex gap-2'
-                                    onClick={() => handleOnClick(bookData, 'Intercambio', isLoading)}
+                                    onClick={() => handleOnClick(bookData, 'Intercambio', setIsLoading)}
                                 >
                                     <img className='w-10' src={intercambio} alt="Intercambiar" />
                                     <div className="w-44 bg-interbook-400 text-white font-bold px-4 py-1 rounded-full cursor-pointer focus:outline-none focus:ring-2 hover:bg-interbook-500 flex items-center justify-center">
@@ -81,7 +81,7 @@ export const ModalBook = ({setOpenBook, bookData}) => {
                                 </div>}
                             {bookData.actions.indexOf("Regalo") != -1 &&
                                 <div className='flex gap-2'
-                                    onClick={() => handleOnClick(bookData, 'Regalo', isLoading)}
+                                    onClick={() => handleOnClick(bookData, 'Regalo', setIsLoading)}
                                 >
                                     <img className='w-10' src={regalo} alt="Pedir" />
                                     <div className="w-44 bg-interbook-400 text-white font-bold px-4 py-1 rounded-full cursor-pointer focus:outline-none focus:ring-2 hover:bg-interbook-500 flex items-center justify-center gap-3">
@@ -92,7 +92,7 @@ export const ModalBook = ({setOpenBook, bookData}) => {
                             }
                             {bookData.actions.indexOf("Venta") != -1 &&
                                 <div className='flex gap-2'
-                                    onClick={() => handleOnClick(bookData, 'Venta', isLoading)}
+                                    onClick={() => handleOnClick(bookData, 'Venta', setIsLoading)}
                                 >
                                     <img className='w-10' src={vende} alt="Comprar" />
                                     <div className="w-44 bg-interbook-400 text-white font-bold px-4 py-1 rounded-full cursor-pointer focus:outline-none focus:ring-2 hover:bg-interbook-500 flex items-center justify-center gap-3">
