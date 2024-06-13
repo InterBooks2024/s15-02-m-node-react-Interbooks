@@ -1,16 +1,10 @@
-import {vende, intercambio, heart, regalo} from '../'
+import {vende, intercambio, heart, regalo, formatString} from '../'
 import { useState } from 'react';
 
 export const Cards = ({ title, synopsis, image, author, category, actions, whishlist=false, isUser , data, setOpenBook}) => {
 // text-transdorm
 
-    function formatString(str) {
-      return str
-        .toLowerCase()
-        .split(' ') 
-        .map(palabra => palabra.charAt(0).toUpperCase() + palabra.slice(1))
-        .join(' ');
-    }
+
     const [myWhishlist, setMyWhishlist] = useState(whishlist)
 
   return (
