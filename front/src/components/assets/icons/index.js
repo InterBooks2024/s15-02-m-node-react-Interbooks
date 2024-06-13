@@ -4,5 +4,6 @@ import intercambio from './intercambio.svg';
 import regalo from './regalo.svg';
 import vende from './vende.svg';
 import whatsapp from './whatsapp.svg';
+import trash from './trash.svg';
 
-export { heart, intercambio, regalo, vende, whatsapp };
+export { heart, intercambio, regalo, vende, whatsapp, trash };
