@@ -17,9 +17,10 @@ export const ExchangesProvider = ({children}) => {
     }
 
     const generateExchange = async (bookid, action, setIsLoading) => {
+      console.log(action)
         const ENDPOINT = `/exchange/${bookid}`
         const RUTA = `${BASE_URL}${ENDPOINT}`
-        const body = {body: {"actions": action}}
+        const body = {"actions": action}
 
         try {
           setIsLoading(true)
@@ -53,8 +54,48 @@ export const ExchangesProvider = ({children}) => {
           throw new Error(error.message)
         }
     }
+    const aceptExchangeReceived = async (exchange) => {
+      const ENDPOINT = `/exchange/${exchangeId}/reject`
+      const RUTA = `${BASE_URL}${ENDPOINT}`
 
-    const value = { generateExchange, getExchangeSent , getExchangeReceived };
+      try {
+        const { data } = await axios.patch(RUTA, config)
+        return data
+      } catch (error) {
+        throw new Error(error.message)
+      }
+    }
+
+    const rejectExchangeReceived = async (exchangeId) => {
+      const ENDPOINT = `/exchange/${exchangeId}/reject`
+      const RUTA = `${BASE_URL}${ENDPOINT}`
+
+      try {
+        const { data } = await axios.patch(RUTA, config)
+        return data
+      } catch (error) {
+        throw new Error(error.message)
+      }
+    }
+    const deleteMadeExchange = async (exchangeId) => {
+      const ENDPOINT = `/exchanges/${exchangeId}/cancel`
+      const RUTA = `${BASE_URL}${ENDPOINT}`
+
+      try {
+        const { data } = await axios.delete(RUTA, config)
+        return data
+      } catch (error) {
+        throw new Error(error.message)
+      }
+    }
+
+
+    const value = { generateExchange, 
+                    getExchangeSent , 
+                    getExchangeReceived , 
+                    rejectExchangeReceived , 
+                    deleteMadeExchange,
+                    aceptExchangeReceived };
     
     return (
         <ExchangesContext.Provider value={ value }>

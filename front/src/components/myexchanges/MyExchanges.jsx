@@ -2,14 +2,22 @@
 import { useExchange } from "../../hooks/useExchange";
 import { useBook } from "../../hooks/useBook";
 import { useEffect, useState } from "react";
-import { trash, linkWhatsapp } from "../";
+import { trash, linkWhatsapp, ModalOtherUser } from "../";
 
 export const MyExchanges = () => {
   // const {tokenJwt, userId} = useUserContext()
-  const {getExchangeSent , getExchangeReceived} = useExchange()
+  const {getExchangeSent , 
+        getExchangeReceived, 
+        rejectExchangeReceived , 
+        deleteMadeExchange} = useExchange()
   const { books, userBooks  } = useBook()
   const [exchangesSent, setExchangesSent] = useState([])
   const [exchangesReceived, setExchangesReceived] = useState([])
+  const [openModal, setOpenModal] = useState(false);
+  const [modalData, setModalData] = useState({});
+  const [modalBook, setModalBook] = useState({});
+  const [isLoading, setIsLoading] = useState(false)
+
   
   const formatTime = (rawDate) => {
     const date = rawDate.split('T')[0] + ' ' + rawDate.split('T')[1].slice(0, 5)
@@ -36,22 +44,43 @@ export const MyExchanges = () => {
       return book[attibute]
     }
   }
-  const handleAcept = (action, phoneNumberUserFrom, book, libraryUserFrom) => {
-    if(action === "Venta" || action === "Regalo"){
-                  // book, action, phoneNumber
-      const link = linkWhatsapp(book, action, phoneNumberUserFrom)
-      window.open(link, '_blank')
+
+  // handleAcept("Intercambio", exchange.phoneNumberUserFrom, singleBookAttibute(exchange.bookId, "all"), exchange.libraryUserFrom)}
+    const handleAcept = (exchange) => {
+      // action, phoneNumberUserFrom, book, libraryUserFrom
+      const book =singleBookAttibute(exchange.bookId, "all")
+      if(exchange.actions[0] === "Venta" || exchange.actions[0] === "Regalo"){
+                    // book, action, phoneNumber
+        const link = linkWhatsapp(book, exchange.actions, exchange.phoneNumberUserFrom)
+        window.open(link, '_blank')
+      } else {
+        setModalData(exchange)
+        // libro propio
+        setModalBook(book)
+        setOpenModal(true)
+      }
     }
-  }
+    const handleReject = async (exchangeId) => {
+      if(isLoading){return}
+      const fetchReject = await rejectExchangeReceived(exchangeId);
+      if(fetchReject){ setIsLoading(true) }
+
+    }
+    const handleDelete = async (exchangeId) => {
+      if(isLoading){return}
+      const fetchReject = await deleteMadeExchange(exchangeId);
+      if(fetchReject){ setIsLoading(true) }
+
+    }
   useEffect(() => {
     const fetchExchanges = async () => {
       const fetchSent = await getExchangeSent();
-      console.log(fetchSent)
       setExchangesSent(fetchSent);
+      console.log(fetchSent)
 
       const fetchReceived = await getExchangeReceived();
-      console.log(fetchReceived)
       setExchangesReceived(fetchReceived);
+      console.log(fetchReceived)
     };
   
     fetchExchanges();
@@ -77,6 +106,7 @@ export const MyExchanges = () => {
     //   "_id": "6669d80b4f689c7c46990521"
     // }
     <>
+    {openModal && <ModalOtherUser data={modalData} setOpen={setOpenModal} book={modalBook}/>}
     <section>
         <h3 className="text-center text-interbook-600 font-bold">Propuestas recibidas</h3>
         {exchangesReceived.length == 0 && 
@@ -96,7 +126,7 @@ export const MyExchanges = () => {
                 </div>
                   <div className="w-[15%] items-center">
                     <p className="text-sm font-semibold leading-6 text-gray-900">{exchange.usernameUserFrom}</p>
-                    <p className="mt-1 truncate text-xs leading-5 text-gray-500">Intercambio</p>
+                    <p className="mt-1 truncate text-xs leading-5 text-gray-500">{exchange.actions}</p>
                   </div>
                   <div className="w-[15%] items-center">
                   <div className="mt-1 flex items-center gap-x-1.5">
@@ -106,9 +136,13 @@ export const MyExchanges = () => {
                     <p className="mt-1 truncate text-xs leading-5 text-gray-500">{formatTime(exchange.createdAt)}</p>
                   </div>
                   <div className="w-[20%] flex gap-2 items-center justify-end">
-                  <button className="px-3 py-1 text-sm font-semibold text-white bg-rose-500 rounded-full hover:bg-red-700">Rechazar</button>
+                  <button className="px-3 py-1 text-sm font-semibold text-white bg-rose-500 rounded-full hover:bg-red-700"
+                          onClick={() => handleReject(exchange._id)}
+                  >
+                    Rechazar
+                  </button>
                   <button className="px-3 py-1 text-sm font-semibold text-white bg-emerald-500 rounded-full hover:bg-green-700"
-                          onClick={() => handleAcept("Regalo", exchange.phoneNumberUserFrom, singleBookAttibute(exchange.bookId, "all"), exchange.libraryUserFrom)}
+                          onClick={() => handleAcept(exchange)}
                   >
                     Aceptar
                   </button>
@@ -122,12 +156,6 @@ export const MyExchanges = () => {
     </section>
     <section>
     <h3 className="text-center text-interbook-600 font-bold mt-12">¡Quiero estos libros!</h3>
-    {/* "_id": "665a060576de73cedbde7695",
-    "userIdTo": "66586293889b4ca664d545b9",
-    "usernameUserTo": "Agathachristie",
-    "status": "pendiente",
-    "actions": [],
-    "createdAt": "2024-05-31T17:16:53.508Z" */}
     {exchangesSent.length == 0 && 
       <h4 className="text-center text-interbook-900">Todavía no has pedido ningún libro</h4>
     }
@@ -146,7 +174,7 @@ export const MyExchanges = () => {
             </div>
               <div className="w-[20%] items-center">
                 <p className="text-sm font-semibold leading-6 text-gray-900">{exchange.usernameUserTo}</p>
-                <p className="mt-1 truncate text-xs leading-5 text-gray-500">Intercambio</p>
+                <p className="mt-1 truncate text-xs leading-5 text-gray-500">{exchange.actions}</p>
               </div>
               <div className="w-[20%] items-center">
               <div className="mt-1 flex items-center gap-x-1.5">
@@ -156,7 +184,7 @@ export const MyExchanges = () => {
                 <p className="mt-1 truncate text-xs leading-5 text-gray-500">{formatTime(exchange.createdAt)}</p>
               </div>
               <div className="w-[10%] flex items-center justify-center cursor-pointer"
-              
+                onClick={() => handleDelete(exchange._id)}
               >
                 <p className="text-sm text-gray-600">Anular</p><img className="w-5 h-5" src={trash} alt="" />
               </div>
